@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -238,6 +240,16 @@
         .btn-subtle:hover { background: var(--surface-bg); color: var(--text-primary); }
         .modal-close-btn { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.1); border: none; color: var(--text-primary); width: 36px; height: 36px; border-radius: 50%; font-size: 1.2em; cursor: pointer; transition: background-color 0.3s ease; z-index: 10; }
         .modal-close-btn:hover { background-color: rgba(255,255,255,0.2); }
+        
+        /* --- NEW: Daily Task Styles --- */
+        .task-item { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--surface-border); }
+        .task-item:last-child { border-bottom: none; }
+        .task-info h4 { font-weight: 600; margin-bottom: 4px; font-size: 1.1em; color: var(--text-primary); }
+        .task-info .info-text { margin: 0; text-align: left; font-size: 0.9em; }
+        .task-action { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; text-align: right; }
+        .task-action .reward-amount { font-weight: 700; color: var(--success-color); font-size: 1.1em; }
+        .task-action .btn { width: auto; padding: 10px 20px; min-width: 120px; font-size: 0.9em; }
+
 
         /* Toast Notification System */
         #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; }
@@ -255,6 +267,8 @@
             .balance-display .amount { font-size: 3.2em; }
             .staking-overview { gap: 10px; }
             .staking-stat .value { font-size: 1.5em; }
+            .task-item { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .task-action { width: 100%; flex-direction: row; justify-content: space-between; align-items: center; }
         }
     </style>
 </head>
@@ -415,6 +429,38 @@
                 <button class="btn btn-sell" id="withdraw-btn-modal"><i class="fas fa-paper-plane"></i>&nbsp; Withdraw</button>
             </div>
         </div>
+        
+        <!-- NEW: Daily Tasks Panel -->
+        <div class="content-panel">
+            <h3>Daily Tasks & Rewards</h3>
+            <div class="task-item">
+                <div class="task-info">
+                    <h4>Daily Check-in</h4>
+                    <p class="info-text">Claim a free bonus every 24 hours.</p>
+                </div>
+                <div class="task-action">
+                    <span class="reward-amount">+ $0.01</span>
+                    <button class="btn btn-subtle" id="daily-checkin-btn">
+                        <span class="btn-text"><i class="fas fa-calendar-check"></i> Check In</span>
+                        <div class="spinner-sm"></div>
+                    </button>
+                </div>
+            </div>
+            <div class="task-item">
+                <div class="task-info">
+                    <h4>Follow Us on WhatsApp</h4>
+                    <p class="info-text">Follow our channel for a one-time reward.</p>
+                </div>
+                <div class="task-action">
+                    <span class="reward-amount">+ $0.001</span>
+                    <button class="btn btn-subtle" id="whatsapp-follow-btn">
+                        <span class="btn-text"><i class="fab fa-whatsapp"></i> Follow</span>
+                        <div class="spinner-sm"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div class="content-panel">
             <h3>Transaction History</h3>
             <ul id="transaction-history-list"><p class="info-text" id="no-transactions-msg">No transactions yet.</p></ul>
@@ -558,7 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 appId: "YOUR_APP_ID"
             },
             WITHDRAWAL_FEE_PERCENT: 0.05,
-            MIN_WITHDRAWAL_USD: 0, // EDIT: Changed from 5 to 0
+            MIN_WITHDRAWAL_USD: 0,
             REFERRAL_BONUS_PERCENT: 0.10,
             PRELOADER_TIMEOUT: 8000,
             // Mining config
@@ -568,6 +614,10 @@ document.addEventListener('DOMContentLoaded', () => {
             MINING_MAX_INVESTMENT_USD: 10000,
             // Staking config
             STAKING_DAILY_RATE_PERCENT: 0.028, // 2.8%
+            // NEW: Task config
+            DAILY_CHECKIN_REWARD_USD: 0.01,
+            WHATSAPP_FOLLOW_REWARD_USD: 0.001,
+            WHATSAPP_CHANNEL_URL: 'https://whatsapp.com/channel/0029Vb6P72rJP21BwMdVP946',
         },
 
         // --- [2] STATE MANAGEMENT ---
@@ -671,6 +721,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 inviteLinkDisplay: document.getElementById('invite-link-display'),
                 invitedUsersList: document.getElementById('invited-users-list'),
                 noInvitesMsg: document.getElementById('no-invites-msg'),
+                // NEW: Task buttons
+                dailyCheckinBtn: document.getElementById('daily-checkin-btn'),
+                whatsappFollowBtn: document.getElementById('whatsapp-follow-btn'),
             };
         },
         
@@ -707,6 +760,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             this.updateMiningUI();
             this.updateStakingUI();
+            this.updateTasksUI(); // NEW
         },
 
         updateTransactionHistory(transactions) {
@@ -723,8 +777,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.className = `transaction-item ${tx.type.toLowerCase()} ${isPending ? 'pending' : ''}`;
                 const icons = { buy: 'fa-cart-plus', sell: 'fa-hand-holding-dollar', deposit: 'fa-arrow-down', withdrawal: 'fa-paper-plane', bonus: 'fa-gift', mining_profit: 'fa-pickaxe', mining_invest: 'fa-bolt', stake: 'fa-lock', unstake: 'fa-unlock', stake_reward: 'fa-star' };
                 let amountDisplay;
-                if (['deposit', 'withdrawal', 'mining_invest'].includes(tx.type)) {
-                    amountDisplay = `${tx.type === 'mining_invest' ? '-' : ''}$${Number(tx.amount).toFixed(2)}`;
+                if (['deposit', 'withdrawal', 'mining_invest'].includes(tx.type) || (tx.type === 'bonus' && tx.details?.reason)) {
+                    amountDisplay = `${tx.type === 'mining_invest' ? '-' : '+'}$${Number(tx.amount).toFixed(4)}`;
                 } else {
                     amountDisplay = `${Number(tx.amount).toFixed(4)} CDNC`;
                 }
@@ -815,6 +869,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('recharge-bep20').style.display = network === 'bep20' ? 'block' : 'none';
                 });
             });
+            
+            // NEW: Task Listeners
+            this.state.ui.dailyCheckinBtn.addEventListener('click', e => this.handleDailyCheckin(e));
+            this.state.ui.whatsappFollowBtn.addEventListener('click', e => this.handleWhatsAppFollow(e));
         },
         
         checkForRefCode() { const refCode = new URLSearchParams(window.location.search).get('ref'); if (refCode) { this.state.ui.registerRefCodeInput.value = refCode; } },
@@ -857,7 +915,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     referralCode: referralCode,
                     referredBy: refCode || null,
                     mining: { active: false, investmentUSD: 0, startTime: 0 },
-                    staking: { stakedAmountCDNC: 0, lastRewardTimestamp: 0, claimableRewards: 0 }
+                    staking: { stakedAmountCDNC: 0, lastRewardTimestamp: 0, claimableRewards: 0 },
+                    // NEW: Initialize task data
+                    lastCheckinTimestamp: 0,
+                    hasFollowedWhatsApp: false,
                 });
                 await user.updateProfile({ displayName: username });
                 this.showToast('Registration successful! You can now log in.', 'success');
@@ -882,7 +943,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const amount = parseFloat(document.getElementById('withdraw-amount').value);
             const address = document.getElementById('withdraw-address').value.trim();
             const network = document.getElementById('withdraw-network').value;
-            // EDIT: Updated validation logic
             if (isNaN(amount) || amount <= 0 || !address || !network) {
                 return this.showToast('Please fill all fields and enter a positive withdrawal amount.', 'danger');
             }
@@ -928,58 +988,94 @@ document.addEventListener('DOMContentLoaded', () => {
         openBoostMiningModal() { if (!this.state.userData || !this.state.userData.mining?.active) return; const { usd_balance, mining } = this.state.userData; this.state.ui.boostModalCurrentInvestment.textContent = `$${(mining.investmentUSD || 0).toFixed(2)}`; this.state.ui.boostModalUsdBalance.textContent = `$${(usd_balance || 0).toFixed(2)}`; this.state.ui.boostInvestmentAmountInput.value = ''; this.updateBoostProfitPreview(); this.showModal('boost-mining-modal'); },
         updateBoostProfitPreview() { const currentInvestment = this.state.userData?.mining?.investmentUSD || 0; const boostAmount = parseFloat(this.state.ui.boostInvestmentAmountInput.value) || 0; const newTotal = currentInvestment + boostAmount; const profitUSD = newTotal * this.config.MINING_DAILY_RATE_PERCENT; const profitCDNC = profitUSD / this.state.coinPrice; this.state.ui.boostModalNewTotal.textContent = `$${newTotal.toFixed(2)}`; this.state.ui.boostModalProfitPreview.textContent = `${profitCDNC.toFixed(4)} CDNC`; },
         async handleBoostMining(e) { e.preventDefault(); const btn = e.target.querySelector('button'); const boostAmount = parseFloat(this.state.ui.boostInvestmentAmountInput.value); if (isNaN(boostAmount) || boostAmount <= 0) return this.showToast(`Please enter a valid amount.`, 'danger'); if (boostAmount > this.state.userData.usd_balance) return this.showToast('Insufficient USD balance.', 'danger'); this.setButtonLoading(btn, true); try { await this.state.userRef.transaction(d => { if (d) { d.usd_balance = (d.usd_balance || 0) - boostAmount; if (d.mining) d.mining.investmentUSD = (d.mining.investmentUSD || 0) + boostAmount; } return d; }); await this.logTransaction('mining_invest', boostAmount, { reason: `Boosted by $${boostAmount}`}); this.showToast(`Boosted investment by $${boostAmount.toFixed(2)}!`, 'success'); this.hideModal('boost-mining-modal'); } catch (error) { this.showToast(`Error: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
-
-        async handleClaimMiningProfit(e) {
-            const btn = e.currentTarget;
-            const { mining } = this.state.userData;
-            if (!mining || !mining.active || !mining.investmentUSD) return;
-
-            const profitUSD = mining.investmentUSD * this.config.MINING_DAILY_RATE_PERCENT;
-            const profitCDNC = profitUSD / this.state.coinPrice;
-            
-            this.setButtonLoading(btn, true);
-            try {
-                await this.state.userRef.update({
-                    'cdnc_balance': firebase.database.ServerValue.increment(profitCDNC),
-                    'mining': { active: false, investmentUSD: 0, startTime: 0 }
-                });
-                await this.logTransaction('mining_profit', profitCDNC, { reason: `Profit from $${mining.investmentUSD} investment`});
-                this.showToast(`Claimed ${profitCDNC.toFixed(4)} CDNC profit!`, 'success');
-            } catch(error) {
-                this.showToast(`Error: ${error.message}`, 'danger');
-            } finally {
-                this.setButtonLoading(btn, false);
-            }
-        },
+        async handleClaimMiningProfit(e) { const btn = e.currentTarget; const { mining } = this.state.userData; if (!mining || !mining.active || !mining.investmentUSD) return; const profitUSD = mining.investmentUSD * this.config.MINING_DAILY_RATE_PERCENT; const profitCDNC = profitUSD / this.state.coinPrice; this.setButtonLoading(btn, true); try { await this.state.userRef.update({ 'cdnc_balance': firebase.database.ServerValue.increment(profitCDNC), 'mining': { active: false, investmentUSD: 0, startTime: 0 } }); await this.logTransaction('mining_profit', profitCDNC, { reason: `Profit from $${mining.investmentUSD} investment`}); this.showToast(`Claimed ${profitCDNC.toFixed(4)} CDNC profit!`, 'success'); } catch(error) { this.showToast(`Error: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
         updateMiningUI() { if(this.state.miningCountdownInterval) clearInterval(this.state.miningCountdownInterval); const miningData = this.state.userData?.mining; if (miningData && miningData.active) { this.state.ui.miningHubIdle.style.display = 'none'; this.state.ui.miningHubActive.style.display = 'block'; const investment = miningData.investmentUSD || 0; const profitUSD = investment * this.config.MINING_DAILY_RATE_PERCENT; const profitCDNC = profitUSD / this.state.coinPrice; this.state.ui.miningInvestmentValue.textContent = `$${investment.toFixed(2)}`; this.state.ui.miningProfitValue.textContent = `${profitCDNC.toFixed(4)} CDNC`; const cycleDurationMs = this.config.MINING_CYCLE_HOURS * 3600 * 1000; const endTime = miningData.startTime + cycleDurationMs; this.state.miningCountdownInterval = setInterval(() => { const timeLeftMs = endTime - Date.now(); if (timeLeftMs <= 0) { clearInterval(this.state.miningCountdownInterval); this.state.ui.miningCountdown.textContent = 'Cycle Complete!'; this.state.ui.miningProgressBar.style.width = '100%'; this.state.ui.claimMiningProfitBtn.disabled = false; this.state.ui.boostMiningModalBtn.disabled = true; return; } const h = Math.floor(timeLeftMs/(3600*1000)); const m = Math.floor((timeLeftMs%(3600*1000))/60000); const s = Math.floor((timeLeftMs%60000)/1000); this.state.ui.miningCountdown.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; const progress = ((cycleDurationMs - timeLeftMs) / cycleDurationMs) * 100; this.state.ui.miningProgressBar.style.width = `${progress}%`; this.state.ui.claimMiningProfitBtn.disabled = true; this.state.ui.boostMiningModalBtn.disabled = false; }, 1000); } else { this.state.ui.miningHubIdle.style.display = 'block'; this.state.ui.miningHubActive.style.display = 'none'; } },
 
         // --- [5.2] Staking Logic ---
         updateStakingUI() { const stakingData = this.state.userData?.staking || { stakedAmountCDNC: 0, lastRewardTimestamp: 0, claimableRewards: 0 }; this.state.ui.stakedBalanceValue.textContent = (stakingData.stakedAmountCDNC || 0).toFixed(4); if(this.state.stakingRewardInterval) clearInterval(this.state.stakingRewardInterval); this.state.stakingRewardInterval = setInterval(() => { const now = Date.now(); const lastTime = stakingData.lastRewardTimestamp || now; const stakedAmount = stakingData.stakedAmountCDNC || 0; if (stakedAmount > 0) { const secondsPassed = (now - lastTime) / 1000; const rewardPerSecond = (stakedAmount * this.config.STAKING_DAILY_RATE_PERCENT) / 86400; const newReward = secondsPassed * rewardPerSecond; const totalClaimable = (stakingData.claimableRewards || 0) + newReward; this.state.ui.stakingRewardsValue.textContent = totalClaimable.toFixed(8); this.state.ui.claimStakingRewardsBtn.disabled = totalClaimable < 0.00000001; } else { this.state.ui.stakingRewardsValue.textContent = '0.00000000'; this.state.ui.claimStakingRewardsBtn.disabled = true; } }, 1000); },
         async handleClaimStakingRewards(e) { const btn = e.currentTarget; this.setButtonLoading(btn, true); const stakingData = this.state.userData.staking; const stakedAmount = stakingData.stakedAmountCDNC || 0; const lastTime = stakingData.lastRewardTimestamp || Date.now(); const secondsPassed = (Date.now() - lastTime) / 1000; const rewardPerSecond = (stakedAmount * this.config.STAKING_DAILY_RATE_PERCENT) / 86400; const newReward = secondsPassed * rewardPerSecond; const totalClaimable = (stakingData.claimableRewards || 0) + newReward; if (totalClaimable <= 0) { this.setButtonLoading(btn, false); return this.showToast("No rewards to claim.", "info"); } try { await this.state.userRef.child('staking').update({ lastRewardTimestamp: firebase.database.ServerValue.TIMESTAMP, claimableRewards: 0 }); await this.state.userRef.update({ cdnc_balance: firebase.database.ServerValue.increment(totalClaimable) }); await this.logTransaction('stake_reward', totalClaimable, { reason: 'Daily Staking Reward' }); this.showToast(`Claimed ${totalClaimable.toFixed(8)} CDNC!`, 'success'); } catch (error) { this.showToast(`Claim failed: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
-        async handleStake(e) { e.preventDefault(); const btn = e.target.querySelector('#stake-btn'); const amount = parseFloat(this.state.ui.stakeAmountInput.value); if (isNaN(amount) || amount <= 0) return this.showToast('Please enter a valid amount.', 'danger'); if (amount > (this.state.userData.cdnc_balance || 0)) return this.showToast('Insufficient CDNC balance.', 'danger'); this.setButtonLoading(btn, true); try { await this.handleClaimStakingRewards({ currentTarget: this.state.ui.claimStakingRewardsBtn }); // Claim existing rewards first
-            await this.state.userRef.transaction(d => { if (d) { d.cdnc_balance = (d.cdnc_balance || 0) - amount; if (!d.staking) d.staking = { stakedAmountCDNC: 0, lastRewardTimestamp: 0, claimableRewards: 0 }; d.staking.stakedAmountCDNC = (d.staking.stakedAmountCDNC || 0) + amount; d.staking.lastRewardTimestamp = firebase.database.ServerValue.TIMESTAMP; } return d; }); await this.logTransaction('stake', amount); this.showToast(`Successfully staked ${amount.toFixed(4)} CDNC!`, 'success'); this.state.ui.stakeAmountInput.value = ''; } catch (error) { this.showToast(`Staking failed: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
-        async handleUnstake(e) { const btn = e.currentTarget; const amount = parseFloat(this.state.ui.stakeAmountInput.value); const stakedAmount = this.state.userData?.staking?.stakedAmountCDNC || 0; if (isNaN(amount) || amount <= 0) return this.showToast('Please enter a valid amount.', 'danger'); if (amount > stakedAmount) return this.showToast('Amount exceeds staked balance.', 'danger'); this.setButtonLoading(btn, true); try { await this.handleClaimStakingRewards({ currentTarget: this.state.ui.claimStakingRewardsBtn }); // Claim rewards before unstaking
-            await this.state.userRef.transaction(d => { if (d && d.staking) { d.cdnc_balance = (d.cdnc_balance || 0) + amount; d.staking.stakedAmountCDNC = (d.staking.stakedAmountCDNC || 0) - amount; d.staking.lastRewardTimestamp = firebase.database.ServerValue.TIMESTAMP; } return d; }); await this.logTransaction('unstake', amount); this.showToast(`Successfully unstaked ${amount.toFixed(4)} CDNC!`, 'success'); this.state.ui.stakeAmountInput.value = ''; } catch (error) { this.showToast(`Unstaking failed: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
+        async handleStake(e) { e.preventDefault(); const btn = e.target.querySelector('#stake-btn'); const amount = parseFloat(this.state.ui.stakeAmountInput.value); if (isNaN(amount) || amount <= 0) return this.showToast('Please enter a valid amount.', 'danger'); if (amount > (this.state.userData.cdnc_balance || 0)) return this.showToast('Insufficient CDNC balance.', 'danger'); this.setButtonLoading(btn, true); try { await this.handleClaimStakingRewards({ currentTarget: this.state.ui.claimStakingRewardsBtn }); await this.state.userRef.transaction(d => { if (d) { d.cdnc_balance = (d.cdnc_balance || 0) - amount; if (!d.staking) d.staking = { stakedAmountCDNC: 0, lastRewardTimestamp: 0, claimableRewards: 0 }; d.staking.stakedAmountCDNC = (d.staking.stakedAmountCDNC || 0) + amount; d.staking.lastRewardTimestamp = firebase.database.ServerValue.TIMESTAMP; } return d; }); await this.logTransaction('stake', amount); this.showToast(`Successfully staked ${amount.toFixed(4)} CDNC!`, 'success'); this.state.ui.stakeAmountInput.value = ''; } catch (error) { this.showToast(`Staking failed: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
+        async handleUnstake(e) { const btn = e.currentTarget; const amount = parseFloat(this.state.ui.stakeAmountInput.value); const stakedAmount = this.state.userData?.staking?.stakedAmountCDNC || 0; if (isNaN(amount) || amount <= 0) return this.showToast('Please enter a valid amount.', 'danger'); if (amount > stakedAmount) return this.showToast('Amount exceeds staked balance.', 'danger'); this.setButtonLoading(btn, true); try { await this.handleClaimStakingRewards({ currentTarget: this.state.ui.claimStakingRewardsBtn }); await this.state.userRef.transaction(d => { if (d && d.staking) { d.cdnc_balance = (d.cdnc_balance || 0) + amount; d.staking.stakedAmountCDNC = (d.staking.stakedAmountCDNC || 0) - amount; d.staking.lastRewardTimestamp = firebase.database.ServerValue.TIMESTAMP; } return d; }); await this.logTransaction('unstake', amount); this.showToast(`Successfully unstaked ${amount.toFixed(4)} CDNC!`, 'success'); this.state.ui.stakeAmountInput.value = ''; } catch (error) { this.showToast(`Unstaking failed: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
         
-        // --- [5.3] Profile Logic ---
-        handleEditUsername(e) {
-            const btn = e.currentTarget;
-            const container = this.state.ui.profileUsernameContainer;
-            const currentUsername = this.state.userData.username;
-            container.innerHTML = `<input type="text" id="edit-username-input" value="${currentUsername || ''}" class="inline-edit-input"> <button class="edit-btn" id="save-username-btn"><i class="fas fa-check"></i></button>`;
-            document.getElementById('save-username-btn').addEventListener('click', async () => {
-                const newUsername = document.getElementById('edit-username-input').value.trim();
-                if (newUsername && newUsername !== currentUsername) {
-                    await this.state.userRef.update({ username: newUsername });
-                    await this.state.currentUser.updateProfile({ displayName: newUsername });
-                    this.showToast('Username updated!', 'success');
-                }
-                container.innerHTML = `<span id="profile-username">${newUsername || currentUsername}</span><button class="edit-btn" id="edit-username-btn"><i class="fas fa-pencil-alt"></i></button>`;
-                document.getElementById('edit-username-btn').addEventListener('click', (e) => this.handleEditUsername(e));
-            });
-        },
-        async handleChangePassword(e) { e.preventDefault(); const btn = e.target.querySelector('button'); const currentPassword = document.getElementById('current-password').value; const newPassword = document.getElementById('new-password').value; if (newPassword.length < 6) return this.showToast('New password must be at least 6 characters.', 'danger'); this.setButtonLoading(btn, true); try { const user = this.state.currentUser; const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPassword); await user.reauthenticateWithCredential(credential); await user.updatePassword(newPassword); this.showToast('Password changed successfully!', 'success'); this.state.ui.changePasswordForm.reset(); } catch (error) { this.showToast(error.message, 'danger'); } finally { this.setButtonLoading(btn, false); } },
+        // --- [5.3] Profile & Task Logic ---
+        updateTasksUI() {
+            if (!this.state.userData) return;
+            const { lastCheckinTimestamp = 0, hasFollowedWhatsApp = false } = this.state.userData;
+            const { dailyCheckinBtn, whatsappFollowBtn } = this.state.ui;
 
+            // Daily Check-in UI
+            const now = new Date();
+            const lastCheckin = new Date(lastCheckinTimestamp);
+            const isSameDay = now.getFullYear() === lastCheckin.getFullYear() && now.getMonth() === lastCheckin.getMonth() && now.getDate() === lastCheckin.getDate();
+            
+            if (isSameDay) {
+                dailyCheckinBtn.disabled = true;
+                dailyCheckinBtn.querySelector('.btn-text').innerHTML = `<i class="fas fa-check"></i> Claimed`;
+            } else {
+                dailyCheckinBtn.disabled = false;
+                dailyCheckinBtn.querySelector('.btn-text').innerHTML = `<i class="fas fa-calendar-check"></i> Check In`;
+            }
+
+            // WhatsApp Follow UI
+            if (hasFollowedWhatsApp) {
+                whatsappFollowBtn.disabled = true;
+                whatsappFollowBtn.querySelector('.btn-text').innerHTML = `<i class="fas fa-check"></i> Claimed`;
+            } else {
+                whatsappFollowBtn.disabled = false;
+                whatsappFollowBtn.querySelector('.btn-text').innerHTML = `<i class="fab fa-whatsapp"></i> Follow`;
+            }
+        },
+        async handleDailyCheckin(e) {
+            e.preventDefault();
+            const btn = this.state.ui.dailyCheckinBtn;
+            const { lastCheckinTimestamp = 0 } = this.state.userData;
+            const now = new Date();
+            const lastCheckin = new Date(lastCheckinTimestamp);
+            const isSameDay = now.getFullYear() === lastCheckin.getFullYear() && now.getMonth() === lastCheckin.getMonth() && now.getDate() === lastCheckin.getDate();
+            
+            if (isSameDay) {
+                return this.showToast('You have already claimed your daily check-in reward today.', 'info');
+            }
+
+            this.setButtonLoading(btn, true);
+            try {
+                await this.state.userRef.update({
+                    usd_balance: firebase.database.ServerValue.increment(this.config.DAILY_CHECKIN_REWARD_USD),
+                    lastCheckinTimestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+                await this.logTransaction('bonus', this.config.DAILY_CHECKIN_REWARD_USD, { reason: 'Daily Check-in Reward' });
+                this.showToast(`You've received $${this.config.DAILY_CHECKIN_REWARD_USD.toFixed(2)} for checking in!`, 'success');
+            } catch (error) {
+                this.showToast(`An error occurred: ${error.message}`, 'danger');
+            } finally {
+                this.setButtonLoading(btn, false);
+            }
+        },
+        async handleWhatsAppFollow(e) {
+            e.preventDefault();
+            const btn = this.state.ui.whatsappFollowBtn;
+            
+            if (this.state.userData.hasFollowedWhatsApp) {
+                return this.showToast('You have already claimed the WhatsApp follow reward.', 'info');
+            }
+
+            this.setButtonLoading(btn, true);
+            try {
+                await this.state.userRef.update({
+                    usd_balance: firebase.database.ServerValue.increment(this.config.WHATSAPP_FOLLOW_REWARD_USD),
+                    hasFollowedWhatsApp: true
+                });
+                await this.logTransaction('bonus', this.config.WHATSAPP_FOLLOW_REWARD_USD, { reason: 'WhatsApp Channel Follow' });
+                this.showToast(`You've received $${this.config.WHATSAPP_FOLLOW_REWARD_USD.toFixed(3)} for following!`, 'success');
+                window.open(this.config.WHATSAPP_CHANNEL_URL, '_blank');
+            } catch (error) {
+                this.showToast(`An error occurred: ${error.message}`, 'danger');
+            } finally {
+                this.setButtonLoading(btn, false);
+            }
+        },
+        handleEditUsername(e) { const btn = e.currentTarget; const container = this.state.ui.profileUsernameContainer; const currentUsername = this.state.userData.username; container.innerHTML = `<input type="text" id="edit-username-input" value="${currentUsername || ''}" class="inline-edit-input"> <button class="edit-btn" id="save-username-btn"><i class="fas fa-check"></i></button>`; document.getElementById('save-username-btn').addEventListener('click', async () => { const newUsername = document.getElementById('edit-username-input').value.trim(); if (newUsername && newUsername !== currentUsername) { await this.state.userRef.update({ username: newUsername }); await this.state.currentUser.updateProfile({ displayName: newUsername }); this.showToast('Username updated!', 'success'); } container.innerHTML = `<span id="profile-username">${newUsername || currentUsername}</span><button class="edit-btn" id="edit-username-btn"><i class="fas fa-pencil-alt"></i></button>`; document.getElementById('edit-username-btn').addEventListener('click', (e) => this.handleEditUsername(e)); }); },
+        async handleChangePassword(e) { e.preventDefault(); const btn = e.target.querySelector('button'); const currentPassword = document.getElementById('current-password').value; const newPassword = document.getElementById('new-password').value; if (newPassword.length < 6) return this.showToast('New password must be at least 6 characters.', 'danger'); this.setButtonLoading(btn, true); try { const user = this.state.currentUser; const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPassword); await user.reauthenticateWithCredential(credential); await user.updatePassword(newPassword); this.showToast('Password changed successfully!', 'success'); this.state.ui.changePasswordForm.reset(); } catch (error) { this.showToast(error.message, 'danger'); } finally { this.setButtonLoading(btn, false); } },
         async logTransaction(type, amount, details = {}) { if(!this.state.currentUser) return; const txData = { type, amount, details, timestamp: firebase.database.ServerValue.TIMESTAMP }; await this.db.ref(`transactions/${this.state.currentUser.uid}`).push(txData); },
 
         // --- [6] DATA LISTENERS ---
@@ -1008,7 +1104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             icon.className = originalIconClass;
                             button.disabled = false;
                         }, 2500);
-                    } else if (elementToUpdate.tagName === 'BUTTON') { // Fallback for other buttons
+                    } else if (elementToUpdate.tagName === 'BUTTON') {
                         const originalHTML = elementToUpdate.innerHTML;
                         elementToUpdate.innerHTML = `<span class="btn-text"><i class="fas fa-check"></i>&nbsp; Copied!</span>`;
                         elementToUpdate.disabled = true;
