@@ -110,7 +110,7 @@
         .header-welcome h2 { font-size: 2.2em; font-weight: 700; line-height: 1.2; }
         .header-welcome p { color: var(--text-secondary); font-weight: 300; font-size: 1.1em; }
 
-        /* --- [EDITED] Mining Hub Styles --- */
+        /* --- Mining Hub Styles --- */
         #mining-hub-idle { text-align: center; }
         #mining-hub-idle .icon { font-size: 4em; color: var(--primary-accent); text-shadow: 0 0 30px var(--primary-accent); margin-bottom: 15px; }
         #mining-hub-idle p { font-size: 1.1em; color: var(--text-secondary); margin-bottom: 25px; line-height: 1.7; }
@@ -238,7 +238,7 @@
         .modal-close-btn { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.1); border: none; color: var(--text-primary); width: 36px; height: 36px; border-radius: 50%; font-size: 1.2em; cursor: pointer; transition: background-color 0.3s ease; z-index: 10; }
         .modal-close-btn:hover { background-color: rgba(255,255,255,0.2); }
         
-        /* --- NEW: Daily Task Styles --- */
+        /* --- Daily Task Styles --- */
         .task-item { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--surface-border); }
         .task-item:last-child { border-bottom: none; }
         .task-info h4 { font-weight: 600; margin-bottom: 4px; font-size: 1.1em; color: var(--text-primary); }
@@ -267,7 +267,7 @@
             .task-item { flex-direction: column; align-items: flex-start; gap: 15px; }
             .task-action { width: 100%; flex-direction: row; justify-content: space-between; align-items: center; }
         }
-    </style>
+</style>
 </head>
 <body>
     <div id="particles-js"></div>
@@ -276,65 +276,65 @@
         <div class="radar-sweep"></div>
     </div>
     <div id="toast-container"></div>
-    
-    <!-- Preloader -->
-    <div id="preloader"><div class="spinner"></div></div>
 
-    <!-- Authentication Container -->
-    <div id="auth-container">
-        <div id="login-page-container" class="auth-form">
-            <div class="auth-icon"><i class="fas fa-atom"></i></div>
-            <div class="content-panel">
-                <h2>Welcome Back</h2>
-                <form id="login-form">
-                    <div class="input-group">
-                        <input type="email" id="login-email" required placeholder="Email" autocomplete="email">
-                        <i class="fa-solid fa-envelope"></i>
-                    </div>
-                    <div class="input-group">
-                        <input type="password" id="login-password" required placeholder="Password" autocomplete="current-password">
-                        <i class="fa-solid fa-lock"></i>
-                        <i class="fa-solid fa-eye toggle-password"></i>
-                    </div>
-                    <button type="submit" class="btn"><span class="btn-text">Login Securely</span><div class="spinner-sm"></div></button>
-                </form>
-                <p class="auth-switch">No account? <a href="#" id="show-register-link">Sign Up</a></p>
-            </div>
-        </div>
-        <div id="register-page-container" class="auth-form" style="display: none;">
-            <div class="auth-icon"><i class="fas fa-user-astronaut"></i></div>
-            <div class="content-panel">
-                <h2>Create Account</h2>
-                <form id="register-form">
-                    <div class="input-group">
-                        <input type="text" id="register-username" required placeholder="Username" autocomplete="username">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <div class="input-group">
-                        <input type="email" id="register-email" required placeholder="Email" autocomplete="email">
-                        <i class="fa-solid fa-envelope"></i>
-                    </div>
-                    <div class="input-group">
-                        <input type="password" id="register-password" required placeholder="Password" autocomplete="new-password">
-                        <i class="fa-solid fa-lock"></i>
-                        <i class="fa-solid fa-eye toggle-password"></i>
-                    </div>
-                    <div class="input-group">
-                        <input type="password" id="register-repeat-password" required placeholder="Repeat Password" autocomplete="new-password">
-                        <i class="fa-solid fa-key"></i>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="register-ref-code" placeholder="Invitation Code (Optional)" autocomplete="off">
-                        <i class="fa-solid fa-gift"></i>
-                    </div>
-                    <button type="submit" class="btn"><span class="btn-text">Create My Account</span><div class="spinner-sm"></div></button>
-                </form>
-                <p class="auth-switch">Have an account? <a href="#" id="show-login-link">Login</a></p>
-            </div>
+<!-- Preloader -->
+<div id="preloader"><div class="spinner"></div></div>
+
+<!-- Authentication Container -->
+<div id="auth-container">
+    <div id="login-page-container" class="auth-form">
+        <div class="auth-icon"><i class="fas fa-atom"></i></div>
+        <div class="content-panel">
+            <h2>Welcome Back</h2>
+            <form id="login-form">
+                <div class="input-group">
+                    <input type="email" id="login-email" required placeholder="Email" autocomplete="email">
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-password" required placeholder="Password" autocomplete="current-password">
+                    <i class="fa-solid fa-lock"></i>
+                    <i class="fa-solid fa-eye toggle-password"></i>
+                </div>
+                <button type="submit" class="btn"><span class="btn-text">Login Securely</span><div class="spinner-sm"></div></button>
+            </form>
+            <p class="auth-switch">No account? <a href="#" id="show-register-link">Sign Up</a></p>
         </div>
     </div>
-
+    <div id="register-page-container" class="auth-form" style="display: none;">
+        <div class="auth-icon"><i class="fas fa-user-astronaut"></i></div>
+        <div class="content-panel">
+            <h2>Create Account</h2>
+            <form id="register-form">
+                <div class="input-group">
+                    <input type="text" id="register-username" required placeholder="Username" autocomplete="username">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="register-email" required placeholder="Email" autocomplete="email">
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="register-password" required placeholder="Password" autocomplete="new-password">
+                    <i class="fa-solid fa-lock"></i>
+                    <i class="fa-solid fa-eye toggle-password"></i>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="register-repeat-password" required placeholder="Repeat Password" autocomplete="new-password">
+                    <i class="fa-solid fa-key"></i>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="register-ref-code" placeholder="Invitation Code (Optional)" autocomplete="off">
+                    <i class="fa-solid fa-gift"></i>
+                </div>
+                <button type="submit" class="btn"><span class="btn-text">Create My Account</span><div class="spinner-sm"></div></button>
+            </form>
+            <p class="auth-switch">Have an account? <a href="#" id="show-login-link">Login</a></p>
+        </div>
+    </div>
+</div>
 <!-- Main Application Container -->
+
 <div id="app-container">
     <!-- Home Page -->
     <main id="home-page" class="page">
@@ -343,177 +343,178 @@
             <p>Manage your investments and grow your holdings.</p>
         </header>
 
-        <!-- [EDITED] Mining Hub with new lifetime logic -->
-        <div class="content-panel" id="mining-hub">
-            <h3>Lifetime Mining Engine</h3>
-            
-            <!-- This shows if user has NOT made their first investment -->
-            <div id="mining-hub-idle">
-                <div class="icon"><i class="fas fa-rocket"></i></div>
-                <p>Make a one-time investment to start the mining engine. Your investment is permanent and generates a 5% daily return, paid in CDNC. You can boost your investment anytime.</p>
-                <button class="btn" id="start-mining-modal-btn"><span class="btn-text"><i class="fas fa-play"></i> Start Mining Now</span></button>
-            </div>
-
-            <!-- This shows if user HAS made their first investment -->
-            <div id="mining-hub-active">
-                <div class="mining-machine-container">
-                    <div class="mining-machine">
-                        <div class="machine-core"><i class="fas fa-server"></i></div>
-                        <div class="machine-light one"></div><div class="machine-light two"></div><div class="machine-light three"></div><div class="machine-light four"></div>
-                    </div>
-                </div>
-                <div class="mining-stat"><span class="label">Total Investment</span><span class="value" id="mining-investment-value">$0.00</span></div>
-                <div class="mining-stat"><span class="label">Daily Profit Rate</span><span class="value profit" id="mining-profit-rate">0.00 CDNC</span></div>
-                <div class="mining-stat"><span class="label">Accumulated Profit</span><span class="value profit" id="mining-accumulated-profit">0.000000 CDNC</span></div>
-
-                <div class="mining-actions">
-                    <button class="btn btn-boost" id="boost-mining-modal-btn"><span class="btn-text"><i class="fas fa-bolt"></i> Boost Investment</span></button>
-                    <button class="btn" id="claim-mining-profit-btn" disabled><span class="btn-text"><i class="fas fa-hand-holding-dollar"></i> Claim Profit</span><div class="spinner-sm"></div></button>
-                </div>
-            </div>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card"><div class="label">CDNC Price</div><div class="value" id="home-coin-price">$....</div></div>
-            <div class="stat-card"><div class="label">Your CDNC</div><div class="value" id="home-cdnc-balance">0.00</div></div>
-            <div class="stat-card"><div class="label">Your Wallet</div><div class="value" id="home-usd-balance">$0.00</div></div>
-            <div class="stat-card"><div class="label">Your Holdings</div><div class="value" id="home-holdings-value">$0.00</div></div>
-        </div>
-    </main>
-
-    <!-- Trade Page -->
-    <section id="trade-page" class="page">
-        <div class="content-panel">
-            <h3>Your CDNC Holdings</h3>
-            <div class="balance-display"><span class="amount" id="trade-cdnc-balance">0.00</span><span class="currency">CDNC</span></div>
-        </div>
-        <div class="content-panel">
-            <h3>Trade CDNC</h3>
-            <p class="info-text" style="margin-bottom: 20px;">Price: <b id="trade-coin-price">$....</b> | Available Wallet: <b id="trade-usd-balance">$0.00</b></p>
-            <div class="trade-form"><input type="number" id="trade-amount" placeholder="Enter amount of CDNC" min="0"></div>
-            <div class="trade-actions">
-                <button class="btn btn-buy" id="buy-btn"><i class="fas fa-arrow-up"></i>&nbsp; <span class="btn-text">Buy</span><div class="spinner-sm"></div></button>
-                <button class="btn btn-sell" id="sell-btn"><i class="fas fa-arrow-down"></i>&nbsp; <span class="btn-text">Sell</span><div class="spinner-sm"></div></button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stake Page -->
-    <section id="stake-page" class="page">
-        <div class="content-panel">
-            <h3>Stake CDNC & Earn</h3>
-            <div class="staking-overview">
-                <div class="staking-stat"><span class="label">Staked Balance</span><span class="value" id="staked-balance-value">0.00</span></div>
-                <div class="staking-stat"><span class="label">Claimable Rewards</span><span class="value" id="staking-rewards-value">0.00</span></div>
-            </div>
-            <p class="info-text" style="margin-bottom: 25px;">Stake your CDNC to earn a <b>2.8% daily reward</b>. Rewards accumulate and can be claimed at any time. You can unstake your principal at any time.</p>
-            <button class="btn btn-claim" id="claim-staking-rewards-btn" style="margin-bottom: 20px;" disabled><span class="btn-text">Claim Rewards</span><div class="spinner-sm"></div></button>
-
-            <form id="stake-form">
-                <div class="input-group"><input type="number" id="stake-amount" placeholder="Amount of CDNC" required min="0.01"><i class="fa-solid fa-coins"></i></div>
-                <div class="trade-actions">
-                    <button type="submit" class="btn btn-stake" id="stake-btn"><i class="fas fa-lock"></i>&nbsp; <span class="btn-text">Stake</span><div class="spinner-sm"></div></button>
-                    <button type="button" class="btn btn-sell" id="unstake-btn"><i class="fas fa-unlock"></i>&nbsp; <span class="btn-text">Unstake</span><div class="spinner-sm"></div></button>
-                </div>
-            </form>
-        </div>
-    </section>
-
-    <!-- Wallet Page -->
-    <section id="wallet-page" class="page">
-        <div class="content-panel">
-            <h3>My Wallet</h3>
-            <div class="balance-display"><span class="amount" id="wallet-usd-balance">$0.00</span><span class="currency">Available USD Balance</span></div>
-            <div class="balance-on-hold" id="wallet-on-hold-balance">On Hold: $0.00</div>
-            <div class="wallet-actions">
-                <button class="btn btn-buy" id="recharge-btn-modal"><i class="fas fa-plus-circle"></i>&nbsp; Recharge</button>
-                <button class="btn btn-sell" id="withdraw-btn-modal"><i class="fas fa-paper-plane"></i>&nbsp; Withdraw</button>
-            </div>
-        </div>
+<!-- Mining Hub with new lifetime logic -->
+    <div class="content-panel" id="mining-hub">
+        <h3>Lifetime Mining Engine</h3>
         
-        <div class="content-panel">
-            <h3>Daily Tasks & Rewards</h3>
-            <div class="task-item">
-                <div class="task-info">
-                    <h4>Daily Check-in</h4>
-                    <p class="info-text">Claim a free bonus every 24 hours.</p>
-                </div>
-                <div class="task-action">
-                    <span class="reward-amount">+ $0.01</span>
-                    <button class="btn btn-subtle" id="daily-checkin-btn">
-                        <span class="btn-text"><i class="fas fa-calendar-check"></i> Check In</span>
-                        <div class="spinner-sm"></div>
-                    </button>
-                </div>
-            </div>
-            <div class="task-item">
-                <div class="task-info">
-                    <h4>Follow Us on WhatsApp</h4>
-                    <p class="info-text">Follow our channel for a one-time reward.</p>
-                </div>
-                <div class="task-action">
-                    <span class="reward-amount">+ $0.001</span>
-                    <button class="btn btn-subtle" id="whatsapp-follow-btn">
-                        <span class="btn-text"><i class="fab fa-whatsapp"></i> Follow</span>
-                        <div class="spinner-sm"></div>
-                    </button>
+        <!-- This shows if user has NOT made their first investment -->
+        <div id="mining-hub-idle">
+            <div class="icon"><i class="fas fa-rocket"></i></div>
+            <p>Make a one-time investment to start the mining engine. Your investment is permanent and generates a 5% daily return, paid in CDNC. You can boost your investment anytime.</p>
+            <button class="btn" id="start-mining-modal-btn"><span class="btn-text"><i class="fas fa-play"></i> Start Mining Now</span></button>
+        </div>
+
+        <!-- This shows if user HAS made their first investment -->
+        <div id="mining-hub-active">
+            <div class="mining-machine-container">
+                <div class="mining-machine">
+                    <div class="machine-core"><i class="fas fa-server"></i></div>
+                    <div class="machine-light one"></div><div class="machine-light two"></div><div class="machine-light three"></div><div class="machine-light four"></div>
                 </div>
             </div>
-        </div>
+            <div class="mining-stat"><span class="label">Total Investment</span><span class="value" id="mining-investment-value">$0.00</span></div>
+            <div class="mining-stat"><span class="label">Daily Profit Rate</span><span class="value profit" id="mining-profit-rate">0.00 CDNC</span></div>
+            <div class="mining-stat"><span class="label">Accumulated Profit</span><span class="value profit" id="mining-accumulated-profit">0.000000 CDNC</span></div>
 
-        <div class="content-panel">
-            <h3>Transaction History</h3>
-            <ul id="transaction-history-list"><p class="info-text" id="no-transactions-msg">No transactions yet.</p></ul>
+            <div class="mining-actions">
+                <button class="btn btn-boost" id="boost-mining-modal-btn"><span class="btn-text"><i class="fas fa-bolt"></i> Boost Investment</span></button>
+                <button class="btn" id="claim-mining-profit-btn" disabled><span class="btn-text"><i class="fas fa-hand-holding-dollar"></i> Claim Profit</span><div class="spinner-sm"></div></button>
+            </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Profile Page -->
-    <section id="profile-page" class="page">
-        <div class="content-panel">
-            <h3>My Profile</h3>
-            <ul class="profile-info">
-                <li><span>Username</span><div class="value-field" id="profile-username-container"><span id="profile-username">...</span><button class="edit-btn" id="edit-username-btn"><i class="fas fa-pencil-alt"></i></button></div></li>
-                <li><span>Email</span> <span id="profile-email">...</span></li>
-                <li><span>User ID</span> <span id="profile-uid" style="font-size: 0.8em; font-family: monospace;">...</span></li>
-            </ul>
-            <button id="logout-btn" class="btn btn-sell"><span class="btn-text">Logout</span><div class="spinner-sm"></div></button>
+    <div class="stats-grid">
+        <div class="stat-card"><div class="label">CDNC Price</div><div class="value" id="home-coin-price">$....</div></div>
+        <div class="stat-card"><div class="label">Your CDNC</div><div class="value" id="home-cdnc-balance">0.00</div></div>
+        <div class="stat-card"><div class="label">Your Wallet</div><div class="value" id="home-usd-balance">$0.00</div></div>
+        <div class="stat-card"><div class="label">Your Holdings</div><div class="value" id="home-holdings-value">$0.00</div></div>
+    </div>
+</main>
+
+<!-- Trade Page -->
+<section id="trade-page" class="page">
+    <div class="content-panel">
+        <h3>Your CDNC Holdings</h3>
+        <div class="balance-display"><span class="amount" id="trade-cdnc-balance">0.00</span><span class="currency">CDNC</span></div>
+    </div>
+    <div class="content-panel">
+        <h3>Trade CDNC</h3>
+        <p class="info-text" style="margin-bottom: 20px;">Price: <b id="trade-coin-price">$....</b> | Available Wallet: <b id="trade-usd-balance">$0.00</b></p>
+        <div class="trade-form"><input type="number" id="trade-amount" placeholder="Enter amount of CDNC" min="0"></div>
+        <div class="trade-actions">
+            <button class="btn btn-buy" id="buy-btn"><i class="fas fa-arrow-up"></i>&nbsp; <span class="btn-text">Buy</span><div class="spinner-sm"></div></button>
+            <button class="btn btn-sell" id="sell-btn"><i class="fas fa-arrow-down"></i>&nbsp; <span class="btn-text">Sell</span><div class="spinner-sm"></div></button>
         </div>
+    </div>
+</section>
 
-        <div class="content-panel">
-            <h3>Security</h3>
-            <form id="change-password-form">
-                <div class="input-group"><input type="password" id="current-password" placeholder="Current Password" required autocomplete="current-password"><i class="fa-solid fa-key"></i></div>
-                <div class="input-group"><input type="password" id="new-password" placeholder="New Password" required autocomplete="new-password"><i class="fa-solid fa-lock"></i></div>
-                <button type="submit" class="btn"><span class="btn-text">Change Password</span><div class="spinner-sm"></div></button>
-            </form>
+<!-- Stake Page -->
+<section id="stake-page" class="page">
+    <div class="content-panel">
+        <h3>Stake CDNC & Earn</h3>
+        <div class="staking-overview">
+            <div class="staking-stat"><span class="label">Staked Balance</span><span class="value" id="staked-balance-value">0.00</span></div>
+            <div class="staking-stat"><span class="label">Claimable Rewards</span><span class="value" id="staking-rewards-value">0.00</span></div>
         </div>
+        <p class="info-text" style="margin-bottom: 25px;">Stake your CDNC to earn a <b>2.8% daily reward</b>. Rewards accumulate and can be claimed at any time. You can unstake your principal at any time.</p>
+        <button class="btn btn-claim" id="claim-staking-rewards-btn" style="margin-bottom: 20px;" disabled><span class="btn-text">Claim Rewards</span><div class="spinner-sm"></div></button>
 
-        <div class="content-panel invite-box">
-            <h3>Invite & Earn 10%</h3>
-            <div class="icon"><i class="fas fa-users-rays"></i></div>
-            <p>Share your link. When a friend's first deposit is approved, you get a 10% bonus!</p>
-            <p class="info-text">Your Invitation Link:</p>
-            <div class="invite-code" id="invite-link-display">Generating...</div>
-            <button class="btn" id="copy-invite-link-btn"><span class="btn-text"><i class="fas fa-copy"></i>&nbsp; Copy My Link</span></button>
+        <form id="stake-form">
+            <div class="input-group"><input type="number" id="stake-amount" placeholder="Amount of CDNC" required min="0.01"><i class="fa-solid fa-coins"></i></div>
+            <div class="trade-actions">
+                <button type="submit" class="btn btn-stake" id="stake-btn"><i class="fas fa-lock"></i>&nbsp; <span class="btn-text">Stake</span><div class="spinner-sm"></div></button>
+                <button type="button" class="btn btn-sell" id="unstake-btn"><i class="fas fa-unlock"></i>&nbsp; <span class="btn-text">Unstake</span><div class="spinner-sm"></div></button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Wallet Page -->
+<section id="wallet-page" class="page">
+    <div class="content-panel">
+        <h3>My Wallet</h3>
+        <div class="balance-display"><span class="amount" id="wallet-usd-balance">$0.00</span><span class="currency">Available USD Balance</span></div>
+        <div class="balance-on-hold" id="wallet-on-hold-balance">On Hold: $0.00</div>
+        <div class="wallet-actions">
+            <button class="btn btn-buy" id="recharge-btn-modal"><i class="fas fa-plus-circle"></i>&nbsp; Recharge</button>
+            <button class="btn btn-sell" id="withdraw-btn-modal"><i class="fas fa-paper-plane"></i>&nbsp; Withdraw</button>
         </div>
-
-        <div class="content-panel">
-            <h3>Your Referrals</h3>
-            <ul id="invited-users-list"><p class="info-text" id="no-invites-msg">You haven't invited anyone yet.</p></ul>
+    </div>
+    
+    <div class="content-panel">
+        <h3>Daily Tasks & Rewards</h3>
+        <div class="task-item">
+            <div class="task-info">
+                <h4>Daily Check-in</h4>
+                <p class="info-text">Claim a free bonus every 24 hours.</p>
+            </div>
+            <div class="task-action">
+                <span class="reward-amount">+ $0.01</span>
+                <button class="btn btn-subtle" id="daily-checkin-btn">
+                    <span class="btn-text"><i class="fas fa-calendar-check"></i> Check In</span>
+                    <div class="spinner-sm"></div>
+                </button>
+            </div>
         </div>
-    </section>
+        <div class="task-item">
+            <div class="task-info">
+                <h4>Follow Us on WhatsApp</h4>
+                <p class="info-text">Follow our channel for a one-time reward.</p>
+            </div>
+            <div class="task-action">
+                <span class="reward-amount">+ $0.001</span>
+                <button class="btn btn-subtle" id="whatsapp-follow-btn">
+                    <span class="btn-text"><i class="fab fa-whatsapp"></i> Follow</span>
+                    <div class="spinner-sm"></div>
+                </button>
+            </div>
+        </div>
+    </div>
 
-    <!-- Bottom Navigation Bar -->
-    <nav class="bottom-nav">
-        <button class="nav-btn active" data-page="home-page"><i class="fas fa-home"></i><span>Home</span></button>
-        <button class="nav-btn" data-page="trade-page"><i class="fas fa-exchange-alt"></i><span>Trade</span></button>
-        <button class="nav-btn" data-page="stake-page"><i class="fas fa-rocket"></i><span>Stake</span></button>
-        <button class="nav-btn" data-page="wallet-page"><i class="fas fa-wallet"></i><span>Wallet</span></button>
-        <button class="nav-btn" data-page="profile-page"><i class="fas fa-user-circle"></i><span>Profile</span></button>
-    </nav>
+    <div class="content-panel">
+        <h3>Transaction History</h3>
+        <ul id="transaction-history-list"><p class="info-text" id="no-transactions-msg">No transactions yet.</p></ul>
+    </div>
+</section>
+
+<!-- Profile Page -->
+<section id="profile-page" class="page">
+    <div class="content-panel">
+        <h3>My Profile</h3>
+        <ul class="profile-info">
+            <li><span>Username</span><div class="value-field" id="profile-username-container"><span id="profile-username">...</span><button class="edit-btn" id="edit-username-btn"><i class="fas fa-pencil-alt"></i></button></div></li>
+            <li><span>Email</span> <span id="profile-email">...</span></li>
+            <li><span>User ID</span> <span id="profile-uid" style="font-size: 0.8em; font-family: monospace;">...</span></li>
+        </ul>
+        <button id="logout-btn" class="btn btn-sell"><span class="btn-text">Logout</span><div class="spinner-sm"></div></button>
+    </div>
+
+    <div class="content-panel">
+        <h3>Security</h3>
+        <form id="change-password-form">
+            <div class="input-group"><input type="password" id="current-password" placeholder="Current Password" required autocomplete="current-password"><i class="fa-solid fa-key"></i></div>
+            <div class="input-group"><input type="password" id="new-password" placeholder="New Password" required autocomplete="new-password"><i class="fa-solid fa-lock"></i></div>
+            <button type="submit" class="btn"><span class="btn-text">Change Password</span><div class="spinner-sm"></div></button>
+        </form>
+    </div>
+
+    <div class="content-panel invite-box">
+        <h3>Invite & Earn 10%</h3>
+        <div class="icon"><i class="fas fa-users-rays"></i></div>
+        <p>Share your link. When your friend starts their mining engine with their first investment, you'll receive a 10% bonus of their investment amount directly in your wallet!</p>
+        <p class="info-text">Your Invitation Link:</p>
+        <div class="invite-code" id="invite-link-display">Generating...</div>
+        <button class="btn" id="copy-invite-link-btn"><span class="btn-text"><i class="fas fa-copy"></i>&nbsp; Copy My Link</span></button>
+    </div>
+
+    <div class="content-panel">
+        <h3>Your Referrals</h3>
+        <ul id="invited-users-list"><p class="info-text" id="no-invites-msg">You haven't invited anyone yet.</p></ul>
+    </div>
+</section>
+
+<!-- Bottom Navigation Bar -->
+<nav class="bottom-nav">
+    <button class="nav-btn active" data-page="home-page"><i class="fas fa-home"></i><span>Home</span></button>
+    <button class="nav-btn" data-page="trade-page"><i class="fas fa-exchange-alt"></i><span>Trade</span></button>
+    <button class="nav-btn" data-page="stake-page"><i class="fas fa-rocket"></i><span>Stake</span></button>
+    <button class="nav-btn" data-page="wallet-page"><i class="fas fa-wallet"></i><span>Wallet</span></button>
+    <button class="nav-btn" data-page="profile-page"><i class="fas fa-user-circle"></i><span>Profile</span></button>
+</nav>
 </div>
 
 <!-- Modals -->
+
 <div id="start-mining-modal" class="modal-overlay">
     <div class="modal-content content-panel">
         <button class="modal-close-btn" data-modal-id="start-mining-modal">×</button>
@@ -584,9 +585,13 @@
 </div>
 
 <!-- Firebase & Particle.js -->
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
 <script>
@@ -605,9 +610,9 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             WITHDRAWAL_FEE_PERCENT: 0.05,
             MIN_WITHDRAWAL_USD: 0,
-            REFERRAL_BONUS_PERCENT: 0.10,
+            REFERRAL_BONUS_PERCENT: 0.10, // 10% bonus
             PRELOADER_TIMEOUT: 8000,
-            // [EDITED] Mining config
+            // Mining config
             MINING_DAILY_RATE_PERCENT: 0.05, // 5%
             MINING_MIN_INVESTMENT_USD: 1,
             MINING_MAX_INVESTMENT_USD: 10000,
@@ -624,12 +629,11 @@ document.addEventListener('DOMContentLoaded', () => {
         state: {
             currentUser: null,
             userData: null,
-            coinPrice: 1.25, // Static price
+            coinPrice: 0, // [EDITED] Initial price is 0, will be fetched from Firebase
             userRef: null,
             txRef: null,
             invitesRef: null,
             preloaderTimeoutId: null,
-            // [EDITED] Renamed interval for clarity
             miningProfitInterval: null,
             stakingRewardInterval: null,
             ui: {},
@@ -638,6 +642,7 @@ document.addEventListener('DOMContentLoaded', () => {
         async init() {
             this.cacheDOMElements();
             this.initFirebase();
+            this.listenToAppConfig(); // Listen for global config like coin price
             this.initParticles();
             this.bindEventListeners();
             this.handleAuth();
@@ -656,6 +661,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error("Firebase initialization failed:", error);
                 this.showToast('Application failed to load.', 'danger');
             }
+        },
+
+        // [NEW] Listen for app-wide configuration from Firebase
+        listenToAppConfig() {
+            this.db.ref('appConfig').on('value', (snapshot) => {
+                const configData = snapshot.val();
+                if (configData && configData.coinPrice) {
+                    this.state.coinPrice = Number(configData.coinPrice);
+                } else {
+                    this.state.coinPrice = 0; // Fallback if price isn't set
+                    console.warn("Coin price not found in Firebase at /appConfig/coinPrice. Defaulting to 0.");
+                }
+                if (this.state.userData) {
+                    this.updateUI(); // Refresh UI if user is already logged in
+                }
+            });
         },
 
         initParticles() {
@@ -681,7 +702,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 homeUsdBalance: document.getElementById('home-usd-balance'),
                 homeCdncBalance: document.getElementById('home-cdnc-balance'),
                 homeHoldingsValue: document.getElementById('home-holdings-value'),
-                // [EDITED] New Mining UI elements
                 miningHubIdle: document.getElementById('mining-hub-idle'),
                 miningHubActive: document.getElementById('mining-hub-active'),
                 miningInvestmentValue: document.getElementById('mining-investment-value'),
@@ -743,8 +763,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const formatToken = (num, digits=4) => Number(num || 0).toFixed(digits);
             
             this.state.ui.welcomeUser.textContent = `Welcome, ${username || email.split('@')[0]}`;
-            this.state.ui.homeCoinPrice.innerText = formatCurrency(this.state.coinPrice);
-            this.state.ui.tradeCoinPrice.innerText = formatCurrency(this.state.coinPrice);
+            // [EDITED] Handle coin price display
+            const coinPriceText = this.state.coinPrice > 0 ? formatCurrency(this.state.coinPrice) : '$....';
+            this.state.ui.homeCoinPrice.innerText = coinPriceText;
+            this.state.ui.tradeCoinPrice.innerText = coinPriceText;
+            
             this.state.ui.homeUsdBalance.textContent = formatCurrency(usd_balance);
             this.state.ui.homeCdncBalance.textContent = formatToken(cdnc_balance, 2);
             this.state.ui.tradeCdncBalance.textContent = formatToken(cdnc_balance, 2);
@@ -777,8 +800,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.className = `transaction-item ${tx.type.toLowerCase()} ${isPending ? 'pending' : ''}`;
                 const icons = { buy: 'fa-cart-plus', sell: 'fa-hand-holding-dollar', deposit: 'fa-arrow-down', withdrawal: 'fa-paper-plane', bonus: 'fa-gift', mining_profit: 'fa-pickaxe', mining_invest: 'fa-bolt', stake: 'fa-lock', unstake: 'fa-unlock', stake_reward: 'fa-star' };
                 let amountDisplay;
-                if (['deposit', 'withdrawal', 'mining_invest'].includes(tx.type) || (tx.type === 'bonus' && tx.details?.reason)) {
+                // [EDITED] Check if amount is USD or CDNC for 'bonus' type
+                if (['deposit', 'withdrawal', 'mining_invest'].includes(tx.type) || (tx.type === 'bonus' && tx.details?.reason && tx.details.reason.toLowerCase().includes('referral'))) {
                     amountDisplay = `${tx.type === 'mining_invest' ? '-' : '+'}$${Number(tx.amount).toFixed(4)}`;
+                } else if (tx.type === 'bonus') {
+                    amountDisplay = `+$${Number(tx.amount).toFixed(4)}`;
                 } else {
                     amountDisplay = `${Number(tx.amount).toFixed(4)} CDNC`;
                 }
@@ -874,7 +900,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     balance_on_hold: 0,
                     referralCode: referralCode,
                     referredBy: refCode || null,
-                    // [EDITED] New mining object
+                    referralBonusPaid: false, // [NEW] Flag for referral bonus
                     mining: {
                         totalInvestmentUSD: 0,
                         lastProfitClaimTimestamp: 0
@@ -895,26 +921,78 @@ document.addEventListener('DOMContentLoaded', () => {
         async handleLogin(e) { e.preventDefault(); const btn = e.target.querySelector('button'); this.setButtonLoading(btn, true); const email = document.getElementById('login-email').value; const password = document.getElementById('login-password').value; try { await this.auth.signInWithEmailAndPassword(email, password); } catch (error) { this.showToast(error.message, 'danger'); } finally { this.setButtonLoading(btn, false); } },
         async handleLogout(e) { const btn = e.currentTarget; this.setButtonLoading(btn, true); try { await this.auth.signOut(); } catch (error) { this.showToast(error.message, 'danger'); } finally { this.setButtonLoading(btn, false); } },
 
-        async handleTrade(type, e) { const btn = e.currentTarget; const amountInput = document.getElementById('trade-amount'); const amount = parseFloat(amountInput.value); if (isNaN(amount) || amount <= 0) { return this.showToast('Please enter a valid positive amount.', 'danger'); } this.setButtonLoading(btn, true); const { usd_balance, cdnc_balance } = this.state.userData; const price = this.state.coinPrice; try { if (type === 'buy') { const cost = amount * price; if (usd_balance < cost) throw new Error('Insufficient USD balance.'); await this.state.userRef.update({ usd_balance: firebase.database.ServerValue.increment(-cost), cdnc_balance: firebase.database.ServerValue.increment(amount) }); await this.logTransaction('buy', amount, { price }); this.showToast(`Successfully bought ${amount.toFixed(4)} CDNC!`, 'success'); } else if (type === 'sell') { if (cdnc_balance < amount) throw new Error('Insufficient CDNC balance.'); const gain = amount * price; await this.state.userRef.update({ usd_balance: firebase.database.ServerValue.increment(gain), cdnc_balance: firebase.database.ServerValue.increment(-amount) }); await this.logTransaction('sell', amount, { price }); this.showToast(`Successfully sold ${amount.toFixed(4)} CDNC!`, 'success'); } amountInput.value = ''; } catch (err) { this.showToast(err.message, 'danger'); } finally { this.setButtonLoading(btn, false); } },
+        async handleTrade(type, e) { const btn = e.currentTarget; if (this.state.coinPrice <= 0) return this.showToast('Trade is disabled until coin price is available.', 'danger'); const amountInput = document.getElementById('trade-amount'); const amount = parseFloat(amountInput.value); if (isNaN(amount) || amount <= 0) { return this.showToast('Please enter a valid positive amount.', 'danger'); } this.setButtonLoading(btn, true); const { usd_balance, cdnc_balance } = this.state.userData; const price = this.state.coinPrice; try { if (type === 'buy') { const cost = amount * price; if (usd_balance < cost) throw new Error('Insufficient USD balance.'); await this.state.userRef.update({ usd_balance: firebase.database.ServerValue.increment(-cost), cdnc_balance: firebase.database.ServerValue.increment(amount) }); await this.logTransaction('buy', amount, { price }); this.showToast(`Successfully bought ${amount.toFixed(4)} CDNC!`, 'success'); } else if (type === 'sell') { if (cdnc_balance < amount) throw new Error('Insufficient CDNC balance.'); const gain = amount * price; await this.state.userRef.update({ usd_balance: firebase.database.ServerValue.increment(gain), cdnc_balance: firebase.database.ServerValue.increment(-amount) }); await this.logTransaction('sell', amount, { price }); this.showToast(`Successfully sold ${amount.toFixed(4)} CDNC!`, 'success'); } amountInput.value = ''; } catch (err) { this.showToast(err.message, 'danger'); } finally { this.setButtonLoading(btn, false); } },
         async handleRecharge(e) { e.preventDefault(); const btn = e.currentTarget.querySelector('button'); const txId = document.getElementById('transaction-id').value.trim(); const amount = parseFloat(document.getElementById('recharge-amount').value); if (!txId || isNaN(amount) || amount <= 0) return this.showToast('Please provide a valid amount and Transaction ID.', 'danger'); this.setButtonLoading(btn, true); const network = document.querySelector('#recharge-modal .option-btn.active').dataset.network; try { await this.db.ref('recharge_requests').push({ userId: this.state.currentUser.uid, userEmail: this.state.currentUser.email, amount, network, txId, status: 'pending', timestamp: firebase.database.ServerValue.TIMESTAMP }); await this.logTransaction('deposit', amount, { network, txId, status: 'pending' }); this.showToast(`Recharge request for $${amount.toFixed(2)} submitted for review!`, 'success'); this.state.ui.rechargeForm.reset(); this.hideModal('recharge-modal'); } catch (err) { this.showToast(`Request failed: ${err.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
         async handleWithdraw(e) { e.preventDefault(); const btn = e.currentTarget.querySelector('button'); const amount = parseFloat(document.getElementById('withdraw-amount').value); const address = document.getElementById('withdraw-address').value.trim(); const network = document.getElementById('withdraw-network').value; if (isNaN(amount) || amount <= 0 || !address || !network) return this.showToast('Please fill all fields and enter a positive withdrawal amount.', 'danger'); if (this.state.userData.usd_balance < amount) return this.showToast(`Insufficient available balance. You need $${amount.toFixed(2)}.`, 'danger'); this.setButtonLoading(btn, true); const fee = amount * this.config.WITHDRAWAL_FEE_PERCENT; try { await this.state.userRef.update({ usd_balance: firebase.database.ServerValue.increment(-amount), balance_on_hold: firebase.database.ServerValue.increment(amount) }); await this.db.ref('withdrawal_requests').push({ userId: this.state.currentUser.uid, userEmail: this.state.currentUser.email, amount, fee, address, network, status: 'pending', timestamp: firebase.database.ServerValue.TIMESTAMP }); await this.logTransaction('withdrawal', amount, { network, address, fee, status: 'pending' }); this.showToast('Withdrawal request submitted for review!', 'success'); this.state.ui.withdrawalForm.reset(); this.hideModal('withdrawal-modal'); } catch (err) { this.showToast(`Withdrawal failed: ${err.message}`, 'danger'); await this.state.userRef.update({ usd_balance: firebase.database.ServerValue.increment(amount), balance_on_hold: firebase.database.ServerValue.increment(-amount) }); } finally { this.setButtonLoading(btn, false); } },
         
-        // --- [5.1] [REWRITTEN] Mining Logic ---
+        // --- [5.1] Mining Logic ---
         openStartMiningModal() { if (!this.state.userData) return; this.state.ui.miningModalUsdBalance.textContent = `$${(this.state.userData.usd_balance || 0).toFixed(2)}`; this.state.ui.miningInvestmentAmountInput.value = ''; this.updateMiningProfitPreview(); this.showModal('start-mining-modal'); },
-        updateMiningProfitPreview() { const amount = parseFloat(this.state.ui.miningInvestmentAmountInput.value) || 0; const profitUSD = amount * this.config.MINING_DAILY_RATE_PERCENT; const profitCDNC = profitUSD / this.state.coinPrice; this.state.ui.miningModalProfitPreview.textContent = `${profitCDNC.toFixed(4)} CDNC`; },
-        async handleStartMining(e) { e.preventDefault(); const btn = e.target.querySelector('button'); const amount = parseFloat(this.state.ui.miningInvestmentAmountInput.value); if (isNaN(amount) || amount < this.config.MINING_MIN_INVESTMENT_USD || amount > this.config.MINING_MAX_INVESTMENT_USD) { return this.showToast(`Investment must be between $${this.config.MINING_MIN_INVESTMENT_USD} and $${this.config.MINING_MAX_INVESTMENT_USD}.`, 'danger'); } if (amount > this.state.userData.usd_balance) { return this.showToast('Insufficient USD balance.', 'danger'); } this.setButtonLoading(btn, true); try { const newBalance = this.state.userData.usd_balance - amount; const miningData = { totalInvestmentUSD: amount, lastProfitClaimTimestamp: firebase.database.ServerValue.TIMESTAMP }; await this.state.userRef.update({ 'usd_balance': newBalance, 'mining': miningData }); await this.logTransaction('mining_invest', amount, { reason: `Initial investment of $${amount}` }); this.showToast(`Mining started with $${amount.toFixed(2)}!`, 'success'); this.hideModal('start-mining-modal'); } catch (error) { this.showToast(`Error: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
+        
+        updateMiningProfitPreview() {
+            if (this.state.coinPrice <= 0) { this.state.ui.miningModalProfitPreview.textContent = '... CDNC (Price loading)'; return; }
+            const amount = parseFloat(this.state.ui.miningInvestmentAmountInput.value) || 0; 
+            const profitUSD = amount * this.config.MINING_DAILY_RATE_PERCENT; 
+            const profitCDNC = profitUSD / this.state.coinPrice; 
+            this.state.ui.miningModalProfitPreview.textContent = `${profitCDNC.toFixed(4)} CDNC`; 
+        },
+
+        async handleStartMining(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const amount = parseFloat(this.state.ui.miningInvestmentAmountInput.value);
+            if (isNaN(amount) || amount < this.config.MINING_MIN_INVESTMENT_USD || amount > this.config.MINING_MAX_INVESTMENT_USD) { return this.showToast(`Investment must be between $${this.config.MINING_MIN_INVESTMENT_USD} and $${this.config.MINING_MAX_INVESTMENT_USD}.`, 'danger'); }
+            if (amount > this.state.userData.usd_balance) { return this.showToast('Insufficient USD balance.', 'danger'); }
+            this.setButtonLoading(btn, true);
+            try {
+                // Perform user's own transaction
+                const newBalance = this.state.userData.usd_balance - amount;
+                const miningData = { totalInvestmentUSD: amount, lastProfitClaimTimestamp: firebase.database.ServerValue.TIMESTAMP };
+                await this.state.userRef.update({ 'usd_balance': newBalance, 'mining': miningData });
+                await this.logTransaction('mining_invest', amount, { reason: `Initial investment of $${amount}` });
+                
+                // [NEW] Handle referral bonus payment
+                const { referredBy, referralBonusPaid } = this.state.userData;
+                if (referredBy && !referralBonusPaid) {
+                    const bonusAmount = amount * this.config.REFERRAL_BONUS_PERCENT;
+                    const referrerQuery = this.db.ref('users').orderByChild('referralCode').equalTo(referredBy);
+                    const snapshot = await referrerQuery.once('value');
+                    
+                    if (snapshot.exists()) {
+                        const referrerUID = Object.keys(snapshot.val())[0];
+                        await this.db.ref('users/' + referrerUID).child('usd_balance').set(firebase.database.ServerValue.increment(bonusAmount));
+                        
+                        const invitedUserEmail = this.state.currentUser.email;
+                        await this.db.ref(`transactions/${referrerUID}`).push({
+                            type: 'bonus',
+                            amount: bonusAmount,
+                            details: { reason: `Referral bonus from ${invitedUserEmail}` },
+                            timestamp: firebase.database.ServerValue.TIMESTAMP
+                        });
+
+                        await this.state.userRef.update({ referralBonusPaid: true });
+                        this.showToast(`Referrer awarded $${bonusAmount.toFixed(2)} bonus!`, 'info');
+                    }
+                }
+                this.showToast(`Mining started with $${amount.toFixed(2)}!`, 'success');
+                this.hideModal('start-mining-modal');
+            } catch (error) { this.showToast(`Error: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); }
+        },
         
         openBoostMiningModal() { if (!this.state.userData || !this.state.userData.mining) return; const { usd_balance, mining } = this.state.userData; this.state.ui.boostModalCurrentInvestment.textContent = `$${(mining.totalInvestmentUSD || 0).toFixed(2)}`; this.state.ui.boostModalUsdBalance.textContent = `$${(usd_balance || 0).toFixed(2)}`; this.state.ui.boostInvestmentAmountInput.value = ''; this.updateBoostProfitPreview(); this.showModal('boost-mining-modal'); },
-        updateBoostProfitPreview() { const currentInvestment = this.state.userData?.mining?.totalInvestmentUSD || 0; const boostAmount = parseFloat(this.state.ui.boostInvestmentAmountInput.value) || 0; const newTotal = currentInvestment + boostAmount; const profitUSD = newTotal * this.config.MINING_DAILY_RATE_PERCENT; const profitCDNC = profitUSD / this.state.coinPrice; this.state.ui.boostModalNewTotal.textContent = `$${newTotal.toFixed(2)}`; this.state.ui.boostModalProfitPreview.textContent = `${profitCDNC.toFixed(4)} CDNC`; },
+        
+        updateBoostProfitPreview() { 
+            if (this.state.coinPrice <= 0) { this.state.ui.boostModalProfitPreview.textContent = '... CDNC (Price loading)'; this.state.ui.boostModalNewTotal.textContent = `$${(this.state.userData?.mining?.totalInvestmentUSD || 0).toFixed(2)}`; return; }
+            const currentInvestment = this.state.userData?.mining?.totalInvestmentUSD || 0; const boostAmount = parseFloat(this.state.ui.boostInvestmentAmountInput.value) || 0; const newTotal = currentInvestment + boostAmount; const profitUSD = newTotal * this.config.MINING_DAILY_RATE_PERCENT; const profitCDNC = profitUSD / this.state.coinPrice; this.state.ui.boostModalNewTotal.textContent = `$${newTotal.toFixed(2)}`; this.state.ui.boostModalProfitPreview.textContent = `${profitCDNC.toFixed(4)} CDNC`;
+        },
+
         async handleBoostMining(e) { e.preventDefault(); const btn = e.target.querySelector('button'); const boostAmount = parseFloat(this.state.ui.boostInvestmentAmountInput.value); if (isNaN(boostAmount) || boostAmount <= 0) return this.showToast(`Please enter a valid amount.`, 'danger'); if (boostAmount > this.state.userData.usd_balance) return this.showToast('Insufficient USD balance.', 'danger'); this.setButtonLoading(btn, true); try { await this.state.userRef.update({ usd_balance: firebase.database.ServerValue.increment(-boostAmount), 'mining/totalInvestmentUSD': firebase.database.ServerValue.increment(boostAmount) }); await this.logTransaction('mining_invest', boostAmount, { reason: `Boosted by $${boostAmount}`}); this.showToast(`Boosted investment by $${boostAmount.toFixed(2)}!`, 'success'); this.hideModal('boost-mining-modal'); } catch (error) { this.showToast(`Error: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
         
         async handleClaimMiningProfit(e) { const btn = e.currentTarget; const { mining } = this.state.userData; if (!mining || !mining.totalInvestmentUSD) return; const profitCDNC = this.calculateMiningProfit(); if (profitCDNC < this.config.MINIMUM_PROFIT_CLAIM_CDNC) { return this.showToast("Accumulated profit is too low to claim.", "info"); } this.setButtonLoading(btn, true); try { await this.state.userRef.transaction(data => { if (data) { const currentProfit = this.calculateMiningProfit(data.mining); data.cdnc_balance = (data.cdnc_balance || 0) + currentProfit; data.mining.lastProfitClaimTimestamp = firebase.database.ServerValue.TIMESTAMP; } return data; }); await this.logTransaction('mining_profit', profitCDNC, { reason: `Profit from $${mining.totalInvestmentUSD} investment`}); this.showToast(`Claimed ${profitCDNC.toFixed(6)} CDNC profit!`, 'success'); } catch(error) { this.showToast(`Error: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
 
         calculateMiningProfit(miningData = this.state.userData.mining) {
-            if (!miningData || !miningData.totalInvestmentUSD || !miningData.lastProfitClaimTimestamp) return 0;
+            if (!miningData || !miningData.totalInvestmentUSD || !miningData.lastProfitClaimTimestamp || this.state.coinPrice <= 0) return 0;
             const elapsedMs = Date.now() - miningData.lastProfitClaimTimestamp;
             if (elapsedMs <= 0) return 0;
-
             const profitPerDayUSD = miningData.totalInvestmentUSD * this.config.MINING_DAILY_RATE_PERCENT;
             const profitPerDayCDNC = profitPerDayUSD / this.state.coinPrice;
             const profitPerMsCDNC = profitPerDayCDNC / (24 * 3600 * 1000);
@@ -929,11 +1007,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.state.ui.miningHubActive.style.display = 'block';
 
                 const investment = miningData.totalInvestmentUSD;
-                const dailyProfitUSD = investment * this.config.MINING_DAILY_RATE_PERCENT;
-                const dailyProfitCDNC = dailyProfitUSD / this.state.coinPrice;
-                
                 this.state.ui.miningInvestmentValue.textContent = `$${investment.toFixed(2)}`;
-                this.state.ui.miningProfitRate.textContent = `${dailyProfitCDNC.toFixed(4)} CDNC`;
+                
+                if (this.state.coinPrice > 0) {
+                    const dailyProfitUSD = investment * this.config.MINING_DAILY_RATE_PERCENT;
+                    const dailyProfitCDNC = dailyProfitUSD / this.state.coinPrice;
+                    this.state.ui.miningProfitRate.textContent = `${dailyProfitCDNC.toFixed(4)} CDNC`;
+                } else {
+                    this.state.ui.miningProfitRate.textContent = '... CDNC';
+                }
                 
                 this.state.miningProfitInterval = setInterval(() => {
                     const accumulatedProfit = this.calculateMiningProfit();
@@ -995,5 +1077,6 @@ document.addEventListener('DOMContentLoaded', () => {
     App.init();
 });
 </script>
+
 </body>
 </html>
