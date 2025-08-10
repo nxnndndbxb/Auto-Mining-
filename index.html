@@ -1,7 +1,6 @@
 
 
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -44,7 +43,7 @@
         }
 
 
-/* --- General & Body Styling --- */
+    /* --- General & Body Styling --- */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
@@ -126,18 +125,105 @@
     #mining-hub-idle .icon { font-size: 4em; color: var(--primary-accent); margin-bottom: 15px; }
     #mining-hub-idle p { font-size: 1.1em; color: var(--text-secondary); margin-bottom: 25px; line-height: 1.7; }
     #mining-hub-active { display: none; }
-    .mining-machine-container { position: relative; display: flex; flex-direction: column; align-items: center; margin-bottom: 25px; }
-    .mining-machine { width: 180px; height: 180px; background-color: rgba(0, 0, 0, 0.1); border-radius: 50%; border: 2px solid var(--surface-border); display: flex; justify-content: center; align-items: center; position: relative; box-shadow: inset 0 0 30px rgba(0,0,0,0.2), 0 0 20px rgba(0,0,0, 0.1); animation: machine-hum 8s ease-in-out infinite; }
-    @keyframes machine-hum { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
-    .machine-core { width: 80px; height: 80px; background: radial-gradient(circle, var(--primary-accent) 0%, var(--secondary-accent) 80%); border-radius: 50%; display: flex; justify-content: center; align-items: center; animation: core-pulse 2s ease-in-out infinite; }
-    .machine-core i { font-size: 3em; color: var(--tertiary-accent); text-shadow: 0 0 10px #000; }
-    @keyframes core-pulse { 0%, 100% { transform: scale(0.9); box-shadow: 0 0 20px 5px rgba(0,0,0,0.2); } 50% { transform: scale(1.0); box-shadow: 0 0 35px 10px rgba(0,0,0,0.3); } }
-    .machine-light { position: absolute; width: 10px; height: 10px; background-color: var(--primary-accent); border-radius: 50%; box-shadow: 0 0 10px var(--primary-accent); animation: light-blink 3s infinite; }
-    .machine-light.one { top: 15px; left: 50%; transform: translateX(-50%); animation-delay: 0s; }
-    .machine-light.two { bottom: 15px; left: 50%; transform: translateX(-50%); animation-delay: 1.5s; }
-    .machine-light.three { left: 15px; top: 50%; transform: translateY(-50%); animation-delay: 0.75s; }
-    .machine-light.four { right: 15px; top: 50%; transform: translateY(-50%); animation-delay: 2.25s; }
-    @keyframes light-blink { 0%, 40%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    /* --- [NEW] Advanced Mining Machine Design --- */
+    .mining-machine-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 30px;
+        min-height: 220px;
+    }
+    .mining-rig {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .rig-ring {
+        position: absolute;
+        border-radius: 50%;
+        border-style: solid;
+        border-color: var(--primary-accent);
+    }
+    .rig-ring-1 {
+        width: 200px;
+        height: 200px;
+        border-width: 2px;
+        opacity: 0.3;
+        animation: spin-clockwise 20s linear infinite;
+    }
+    .rig-ring-2 {
+        width: 170px;
+        height: 170px;
+        border-width: 4px;
+        border-style: dotted;
+        opacity: 0.5;
+        animation: spin-counter-clockwise 15s linear infinite;
+    }
+    .rig-ring-3 {
+        width: 140px;
+        height: 140px;
+        border-width: 1px;
+        border-top-color: var(--tertiary-accent);
+        border-bottom-color: var(--tertiary-accent);
+        opacity: 0.8;
+        box-shadow: 0 0 15px rgba(255,255,255,0.3), 0 0 25px rgba(0,0,0,0.3);
+        animation: spin-clockwise 10s linear infinite;
+    }
+    .rig-core {
+        width: 100px;
+        height: 100px;
+        background: radial-gradient(ellipse, hsla(0, 0%, 0%, 0.5) 0%, hsla(0, 0%, 0%, 0.2) 40%, transparent 70%);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        animation: core-pulse-glow 4s ease-in-out infinite;
+    }
+    .rig-core::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(ellipse, var(--tertiary-accent) 0%, transparent 70%);
+        opacity: 0.1;
+        border-radius: 50%;
+        animation: core-flare 4s ease-in-out infinite;
+        animation-delay: 1s;
+    }
+    .rig-core i {
+        font-size: 3.5em;
+        color: var(--tertiary-accent);
+        text-shadow: 0 0 10px var(--primary-accent), 0 0 20px var(--background-dark), 0 0 30px var(--background-dark);
+        animation: icon-flicker 4s ease-in-out infinite;
+    }
+    @keyframes spin-clockwise { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes spin-counter-clockwise { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+    @keyframes core-pulse-glow {
+        0%, 100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 20px 5px hsla(45, 100%, 51%, 0.2), inset 0 0 20px hsla(0, 0%, 0%, 0.5);
+        }
+        50% {
+            transform: scale(1);
+            box-shadow: 0 0 40px 10px hsla(45, 100%, 51%, 0.4), inset 0 0 10px hsla(0, 0%, 0%, 0.3);
+        }
+    }
+    @keyframes core-flare {
+        0%, 100% { transform: scale(1); opacity: 0.1; }
+        50% { transform: scale(1.2); opacity: 0.3; }
+    }
+    @keyframes icon-flicker {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.8; transform: scale(0.98); }
+    }
+    /* --- End of Advanced Mining Machine Design --- */
+    
     .mining-stat { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--surface-border); }
     .mining-stat:last-child { border-bottom: none; }
     .mining-stat .label { color: var(--text-secondary); font-size: 1em; }
@@ -367,12 +453,18 @@
 
     <!-- This shows if user HAS made their first investment -->
     <div id="mining-hub-active">
+        <!-- [NEW] Attractive Mining Machine -->
         <div class="mining-machine-container">
-            <div class="mining-machine">
-                <div class="machine-core"><i class="fas fa-server"></i></div>
-                <div class="machine-light one"></div><div class="machine-light two"></div><div class="machine-light three"></div><div class="machine-light four"></div>
+            <div class="mining-rig">
+                <div class="rig-ring rig-ring-1"></div>
+                <div class="rig-ring rig-ring-2"></div>
+                <div class="rig-ring rig-ring-3"></div>
+                <div class="rig-core">
+                    <i class="fas fa-atom"></i>
+                </div>
             </div>
         </div>
+        <!-- End of new machine -->
         <div class="mining-stat"><span class="label">Total Investment</span><span class="value" id="mining-investment-value">$0.00</span></div>
         <div class="mining-stat"><span class="label">Daily Profit Rate</span><span class="value profit" id="mining-profit-rate">0.00 CDNC</span></div>
         <div class="mining-stat"><span class="label">Accumulated Profit</span><span class="value profit" id="mining-accumulated-profit">0.000000 CDNC</span></div>
