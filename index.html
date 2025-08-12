@@ -287,6 +287,8 @@
         .task-action { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; text-align: right; }
         .task-action .reward-amount { font-weight: 700; color: var(--success-color); font-size: 1.1em; }
         .task-action .btn { width: auto; padding: 10px 20px; min-width: 120px; font-size: 0.9em; }
+        /* Style for invitation task progress */
+        .task-progress-details p { margin: 0; font-size: 0.85em; color: var(--text-secondary); font-weight: 500;}
 
         /* Toast Notification System */
         #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; }
@@ -509,6 +511,24 @@
                         </button>
                     </div>
                 </div>
+                <!-- NEW INVITATION TASK -->
+                <div class="task-item">
+                    <div class="task-info">
+                        <h4>Invitation Challenge</h4>
+                        <p class="info-text">Invite 3 users whose first investments total at least $9.</p>
+                        <div class="task-progress-details">
+                            <p id="invite-task-progress-users">Users: 0/3</p>
+                            <p id="invite-task-progress-investment">Investment: $0.00/$9.00</p>
+                        </div>
+                    </div>
+                    <div class="task-action">
+                        <span class="reward-amount">+ $4.00</span>
+                        <button class="btn btn-subtle" id="claim-invite-task-btn" disabled>
+                            <span class="btn-text"><i class="fas fa-trophy"></i> Claim Reward</span>
+                            <div class="spinner-sm"></div>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div class="content-panel">
@@ -668,6 +688,10 @@
                 DAILY_CHECKIN_REWARD_USD: 0.01,
                 WHATSAPP_FOLLOW_REWARD_USD: 0.001,
                 WHATSAPP_CHANNEL_URL: 'https://whatsapp.com/channel/0029Vb6P72rJP21BwMdVP946',
+                // NEW INVITATION TASK CONFIG
+                INVITE_TASK_REQUIRED_USERS: 3,
+                INVITE_TASK_REQUIRED_INVESTMENT_USD: 9,
+                INVITE_TASK_REWARD_USD: 4,
             },
 
             // --- [2] STATE MANAGEMENT ---
@@ -790,6 +814,10 @@
                     noInvitesMsg: document.getElementById('no-invites-msg'),
                     dailyCheckinBtn: document.getElementById('daily-checkin-btn'),
                     whatsappFollowBtn: document.getElementById('whatsapp-follow-btn'),
+                    // NEW INVITATION TASK UI ELEMENTS
+                    inviteTaskProgressUsers: document.getElementById('invite-task-progress-users'),
+                    inviteTaskProgressInvestment: document.getElementById('invite-task-progress-investment'),
+                    claimInviteTaskBtn: document.getElementById('claim-invite-task-btn'),
                 };
             },
             
@@ -845,10 +873,8 @@
                     item.className = `transaction-item ${tx.type.toLowerCase()} ${isPending ? 'pending' : ''}`;
                     const icons = { buy: 'fa-cart-plus', sell: 'fa-hand-holding-dollar', deposit: 'fa-arrow-down', withdrawal: 'fa-paper-plane', bonus: 'fa-gift', mining_profit: 'fa-pickaxe', mining_invest: 'fa-bolt', stake: 'fa-lock', unstake: 'fa-unlock', stake_reward: 'fa-star' };
                     let amountDisplay;
-                    if (['deposit', 'withdrawal', 'mining_invest'].includes(tx.type) || (tx.type === 'bonus' && tx.details?.reason && tx.details.reason.toLowerCase().includes('referral'))) {
+                    if (['deposit', 'withdrawal', 'mining_invest'].includes(tx.type) || (tx.type === 'bonus' && tx.details?.reason && tx.details.reason.toLowerCase().includes('referral')) || (tx.type === 'bonus')) {
                         amountDisplay = `${tx.type === 'mining_invest' ? '-' : '+'}$${Number(tx.amount).toFixed(4)}`;
-                    } else if (tx.type === 'bonus') {
-                        amountDisplay = `+$${Number(tx.amount).toFixed(4)}`;
                     } else {
                         amountDisplay = `${Number(tx.amount).toFixed(4)} CDNC`;
                     }
@@ -910,6 +936,7 @@
                 });
                 this.state.ui.dailyCheckinBtn.addEventListener('click', e => this.handleDailyCheckin(e));
                 this.state.ui.whatsappFollowBtn.addEventListener('click', e => this.handleWhatsAppTask(e));
+                this.state.ui.claimInviteTaskBtn.addEventListener('click', e => this.handleClaimInviteTask(e)); // Listener for new task
             },
             
             checkForRefCode() { const refCode = new URLSearchParams(window.location.search).get('ref'); if (refCode) { this.state.ui.registerRefCodeInput.value = refCode; } },
@@ -951,6 +978,13 @@
                         staking: { stakedAmountCDNC: 0, lastRewardTimestamp: 0, claimableRewards: 0 },
                         lastCheckinTimestamp: 0,
                         hasFollowedWhatsApp: false,
+                        // Initialize new task data
+                        invitationTaskProgress: {
+                            invitedUsersCount: 0,
+                            totalInvestmentFromInvites: 0,
+                            investedUserUIDs: {},
+                        },
+                        invitationTaskRewardClaimed: false,
                     });
                     await user.updateProfile({ displayName: username });
                     this.showToast('Registration successful! You can now log in.', 'success');
@@ -971,7 +1005,7 @@
             // --- [5.1] Mining Logic ---
             openStartMiningModal() { if (!this.state.userData) return; this.state.ui.miningModalUsdBalance.textContent = `$${(this.state.userData.usd_balance || 0).toFixed(2)}`; this.state.ui.miningInvestmentAmountInput.value = ''; this.updateMiningProfitPreview(); this.showModal('start-mining-modal'); },
             updateMiningProfitPreview() { if (this.state.coinPrice <= 0) { this.state.ui.miningModalProfitPreview.textContent = '... CDNC (Price loading)'; return; } const amount = parseFloat(this.state.ui.miningInvestmentAmountInput.value) || 0; const profitUSD = amount * this.config.MINING_DAILY_RATE_PERCENT; const profitCDNC = profitUSD / this.state.coinPrice; this.state.ui.miningModalProfitPreview.textContent = `${profitCDNC.toFixed(4)} CDNC`; },
-            async handleStartMining(e) { e.preventDefault(); const btn = e.target.querySelector('button'); const amount = parseFloat(this.state.ui.miningInvestmentAmountInput.value); if (isNaN(amount) || amount < this.config.MINING_MIN_INVESTMENT_USD || amount > this.config.MINING_MAX_INVESTMENT_USD) { return this.showToast(`Investment must be between $${this.config.MINING_MIN_INVESTMENT_USD} and $${this.config.MINING_MAX_INVESTMENT_USD}.`, 'danger'); } if (amount > this.state.userData.usd_balance) { return this.showToast('Insufficient USD balance.', 'danger'); } this.setButtonLoading(btn, true); try { const newBalance = this.state.userData.usd_balance - amount; const miningData = { totalInvestmentUSD: amount, lastProfitClaimTimestamp: firebase.database.ServerValue.TIMESTAMP }; await this.state.userRef.update({ 'usd_balance': newBalance, 'mining': miningData }); await this.logTransaction('mining_invest', amount, { reason: `Initial investment of $${amount}` }); const { referredBy, referralBonusPaid } = this.state.userData; if (referredBy && !referralBonusPaid) { const bonusAmount = amount * this.config.REFERRAL_BONUS_PERCENT; const referrerQuery = this.db.ref('users').orderByChild('referralCode').equalTo(referredBy); const snapshot = await referrerQuery.once('value'); if (snapshot.exists()) { const referrerUID = Object.keys(snapshot.val())[0]; await this.db.ref('users/' + referrerUID).child('usd_balance').set(firebase.database.ServerValue.increment(bonusAmount)); const invitedUserEmail = this.state.currentUser.email; await this.db.ref(`transactions/${referrerUID}`).push({ type: 'bonus', amount: bonusAmount, details: { reason: `Referral bonus from ${invitedUserEmail}` }, timestamp: firebase.database.ServerValue.TIMESTAMP }); await this.state.userRef.update({ referralBonusPaid: true }); this.showToast(`Referrer awarded $${bonusAmount.toFixed(2)} bonus!`, 'info'); } } this.showToast(`Mining started with $${amount.toFixed(2)}!`, 'success'); this.hideModal('start-mining-modal'); } catch (error) { this.showToast(`Error: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
+            async handleStartMining(e) { e.preventDefault(); const btn = e.target.querySelector('button'); const amount = parseFloat(this.state.ui.miningInvestmentAmountInput.value); if (isNaN(amount) || amount < this.config.MINING_MIN_INVESTMENT_USD || amount > this.config.MINING_MAX_INVESTMENT_USD) { return this.showToast(`Investment must be between $${this.config.MINING_MIN_INVESTMENT_USD} and $${this.config.MINING_MAX_INVESTMENT_USD}.`, 'danger'); } if (amount > this.state.userData.usd_balance) { return this.showToast('Insufficient USD balance.', 'danger'); } this.setButtonLoading(btn, true); try { const newBalance = this.state.userData.usd_balance - amount; const miningData = { totalInvestmentUSD: amount, lastProfitClaimTimestamp: firebase.database.ServerValue.TIMESTAMP }; await this.state.userRef.update({ 'usd_balance': newBalance, 'mining': miningData }); await this.logTransaction('mining_invest', amount, { reason: `Initial investment of $${amount}` }); const { referredBy, referralBonusPaid } = this.state.userData; if (referredBy && !referralBonusPaid) { const bonusAmount = amount * this.config.REFERRAL_BONUS_PERCENT; const referrerQuery = this.db.ref('users').orderByChild('referralCode').equalTo(referredBy); const snapshot = await referrerQuery.once('value'); if (snapshot.exists()) { const referrerUID = Object.keys(snapshot.val())[0]; const invitedUserEmail = this.state.currentUser.email; await this.db.ref('users/' + referrerUID).child('usd_balance').set(firebase.database.ServerValue.increment(bonusAmount)); await this.db.ref(`transactions/${referrerUID}`).push({ type: 'bonus', amount: bonusAmount, details: { reason: `Referral bonus from ${invitedUserEmail}` }, timestamp: firebase.database.ServerValue.TIMESTAMP }); await this.state.userRef.update({ referralBonusPaid: true }); this.showToast(`Referrer awarded $${bonusAmount.toFixed(2)} bonus!`, 'info'); const referrerRef = this.db.ref('users/' + referrerUID); await referrerRef.transaction(referrerData => { if (referrerData) { if (!referrerData.invitationTaskProgress) { referrerData.invitationTaskProgress = { invitedUsersCount: 0, totalInvestmentFromInvites: 0, investedUserUIDs: {} }; } if (!referrerData.invitationTaskProgress.investedUserUIDs) { referrerData.invitationTaskProgress.investedUserUIDs = {}; } if (!referrerData.invitationTaskProgress.investedUserUIDs[this.state.currentUser.uid]) { referrerData.invitationTaskProgress.investedUserUIDs[this.state.currentUser.uid] = true; referrerData.invitationTaskProgress.invitedUsersCount = (referrerData.invitationTaskProgress.invitedUsersCount || 0) + 1; referrerData.invitationTaskProgress.totalInvestmentFromInvites = (referrerData.invitationTaskProgress.totalInvestmentFromInvites || 0) + amount; } } return referrerData; }); } } this.showToast(`Mining started with $${amount.toFixed(2)}!`, 'success'); this.hideModal('start-mining-modal'); } catch (error) { this.showToast(`Error: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
             openBoostMiningModal() { if (!this.state.userData || !this.state.userData.mining) return; const { usd_balance, mining } = this.state.userData; this.state.ui.boostModalCurrentInvestment.textContent = `$${(mining.totalInvestmentUSD || 0).toFixed(2)}`; this.state.ui.boostModalUsdBalance.textContent = `$${(usd_balance || 0).toFixed(2)}`; this.state.ui.boostInvestmentAmountInput.value = ''; this.updateBoostProfitPreview(); this.showModal('boost-mining-modal'); },
             updateBoostProfitPreview() { if (this.state.coinPrice <= 0) { this.state.ui.boostModalProfitPreview.textContent = '... CDNC (Price loading)'; this.state.ui.boostModalNewTotal.textContent = `$${(this.state.userData?.mining?.totalInvestmentUSD || 0).toFixed(2)}`; return; } const currentInvestment = this.state.userData?.mining?.totalInvestmentUSD || 0; const boostAmount = parseFloat(this.state.ui.boostInvestmentAmountInput.value) || 0; const newTotal = currentInvestment + boostAmount; const profitUSD = newTotal * this.config.MINING_DAILY_RATE_PERCENT; const profitCDNC = profitUSD / this.state.coinPrice; this.state.ui.boostModalNewTotal.textContent = `$${newTotal.toFixed(2)}`; this.state.ui.boostModalProfitPreview.textContent = `${profitCDNC.toFixed(4)} CDNC`; },
             async handleBoostMining(e) { e.preventDefault(); const btn = e.target.querySelector('button'); const boostAmount = parseFloat(this.state.ui.boostInvestmentAmountInput.value); if (isNaN(boostAmount) || boostAmount <= 0) return this.showToast(`Please enter a valid amount.`, 'danger'); if (boostAmount > this.state.userData.usd_balance) return this.showToast('Insufficient USD balance.', 'danger'); this.setButtonLoading(btn, true); try { await this.state.userRef.update({ usd_balance: firebase.database.ServerValue.increment(-boostAmount), 'mining/totalInvestmentUSD': firebase.database.ServerValue.increment(boostAmount) }); await this.logTransaction('mining_invest', boostAmount, { reason: `Boosted by $${boostAmount}`}); this.showToast(`Boosted investment by $${boostAmount.toFixed(2)}!`, 'success'); this.hideModal('boost-mining-modal'); } catch (error) { this.showToast(`Error: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
@@ -988,9 +1022,9 @@
             // --- [5.3] Profile & Task Logic ---
             updateTasksUI() {
                 if (!this.state.userData) return;
+                // Daily Check-in
                 const { lastCheckinTimestamp = 0, hasFollowedWhatsApp = false } = this.state.userData;
                 const { dailyCheckinBtn, whatsappFollowBtn } = this.state.ui;
-
                 const now = new Date();
                 const lastCheckin = new Date(lastCheckinTimestamp);
                 const isSameDay = now.getFullYear() === lastCheckin.getFullYear() && now.getMonth() === lastCheckin.getMonth() && now.getDate() === lastCheckin.getDate();
@@ -1001,7 +1035,7 @@
                     dailyCheckinBtn.disabled = false;
                     dailyCheckinBtn.querySelector('.btn-text').innerHTML = `<i class="fas fa-calendar-check"></i> Check In`;
                 }
-
+                // WhatsApp Follow
                 if (hasFollowedWhatsApp) {
                     whatsappFollowBtn.disabled = true;
                     whatsappFollowBtn.querySelector('.btn-text').innerHTML = `<i class="fas fa-check"></i> Claimed`;
@@ -1013,33 +1047,44 @@
                         whatsappFollowBtn.dataset.taskState = 'follow';
                     }
                 }
+                // Invitation Task
+                const { inviteTaskProgressUsers, inviteTaskProgressInvestment, claimInviteTaskBtn } = this.state.ui;
+                const { INVITE_TASK_REQUIRED_USERS, INVITE_TASK_REQUIRED_INVESTMENT_USD } = this.config;
+                const progress = this.state.userData.invitationTaskProgress || { invitedUsersCount: 0, totalInvestmentFromInvites: 0 };
+                const rewardClaimed = this.state.userData.invitationTaskRewardClaimed || false;
+                inviteTaskProgressUsers.textContent = `Users: ${progress.invitedUsersCount}/${INVITE_TASK_REQUIRED_USERS}`;
+                inviteTaskProgressInvestment.textContent = `Investment: $${(progress.totalInvestmentFromInvites || 0).toFixed(2)}/$${INVITE_TASK_REQUIRED_INVESTMENT_USD.toFixed(2)}`;
+                if (rewardClaimed) {
+                    claimInviteTaskBtn.disabled = true;
+                    claimInviteTaskBtn.querySelector('.btn-text').innerHTML = `<i class="fas fa-check"></i> Claimed`;
+                } else {
+                    const isComplete = progress.invitedUsersCount >= INVITE_TASK_REQUIRED_USERS && progress.totalInvestmentFromInvites >= INVITE_TASK_REQUIRED_INVESTMENT_USD;
+                    claimInviteTaskBtn.disabled = !isComplete;
+                    claimInviteTaskBtn.querySelector('.btn-text').innerHTML = `<i class="fas fa-trophy"></i> Claim Reward`;
+                }
             },
             async handleDailyCheckin(e) { e.preventDefault(); const btn = this.state.ui.dailyCheckinBtn; const { lastCheckinTimestamp = 0 } = this.state.userData; const now = new Date(); const lastCheckin = new Date(lastCheckinTimestamp); const isSameDay = now.getFullYear() === lastCheckin.getFullYear() && now.getMonth() === lastCheckin.getMonth() && now.getDate() === lastCheckin.getDate(); if (isSameDay) { return this.showToast('You have already claimed your daily check-in reward today.', 'info'); } this.setButtonLoading(btn, true); try { await this.state.userRef.update({ usd_balance: firebase.database.ServerValue.increment(this.config.DAILY_CHECKIN_REWARD_USD), lastCheckinTimestamp: firebase.database.ServerValue.TIMESTAMP }); await this.logTransaction('bonus', this.config.DAILY_CHECKIN_REWARD_USD, { reason: 'Daily Check-in Reward' }); this.showToast(`You've received $${this.config.DAILY_CHECKIN_REWARD_USD.toFixed(2)} for checking in!`, 'success'); } catch (error) { this.showToast(`An error occurred: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
-            async handleWhatsAppTask(e) {
+            async handleWhatsAppTask(e) { e.preventDefault(); const btn = this.state.ui.whatsappFollowBtn; const state = btn.dataset.taskState; if (state === 'follow') { window.open(this.config.WHATSAPP_CHANNEL_URL, '_blank'); btn.querySelector('.btn-text').innerHTML = `<i class="fas fa-hand-holding-dollar"></i> Claim Reward`; btn.dataset.taskState = 'claim'; } else if (state === 'claim') { if (this.state.userData.hasFollowedWhatsApp) { return this.showToast('You have already claimed this reward.', 'info'); } this.setButtonLoading(btn, true); try { await this.state.userRef.update({ usd_balance: firebase.database.ServerValue.increment(this.config.WHATSAPP_FOLLOW_REWARD_USD), hasFollowedWhatsApp: true }); await this.logTransaction('bonus', this.config.WHATSAPP_FOLLOW_REWARD_USD, { reason: 'WhatsApp Channel Follow' }); this.showToast(`You've received $${this.config.WHATSAPP_FOLLOW_REWARD_USD.toFixed(3)} for following!`, 'success'); } catch (error) { this.showToast(`An error occurred: ${error.message}`, 'danger'); this.setButtonLoading(btn, false); } } },
+            async handleClaimInviteTask(e) {
                 e.preventDefault();
-                const btn = this.state.ui.whatsappFollowBtn;
-                const state = btn.dataset.taskState;
-
-                if (state === 'follow') {
-                    window.open(this.config.WHATSAPP_CHANNEL_URL, '_blank');
-                    btn.querySelector('.btn-text').innerHTML = `<i class="fas fa-hand-holding-dollar"></i> Claim Reward`;
-                    btn.dataset.taskState = 'claim';
-                } else if (state === 'claim') {
-                    if (this.state.userData.hasFollowedWhatsApp) {
-                        return this.showToast('You have already claimed this reward.', 'info');
-                    }
-                    this.setButtonLoading(btn, true);
-                    try {
-                        await this.state.userRef.update({
-                            usd_balance: firebase.database.ServerValue.increment(this.config.WHATSAPP_FOLLOW_REWARD_USD),
-                            hasFollowedWhatsApp: true
-                        });
-                        await this.logTransaction('bonus', this.config.WHATSAPP_FOLLOW_REWARD_USD, { reason: 'WhatsApp Channel Follow' });
-                        this.showToast(`You've received $${this.config.WHATSAPP_FOLLOW_REWARD_USD.toFixed(3)} for following!`, 'success');
-                    } catch (error) {
-                        this.showToast(`An error occurred: ${error.message}`, 'danger');
-                        this.setButtonLoading(btn, false); 
-                    }
+                const btn = e.currentTarget;
+                this.setButtonLoading(btn, true);
+                const { invitationTaskProgress, invitationTaskRewardClaimed } = this.state.userData;
+                const { INVITE_TASK_REQUIRED_USERS, INVITE_TASK_REQUIRED_INVESTMENT_USD, INVITE_TASK_REWARD_USD } = this.config;
+                const isComplete = invitationTaskProgress && invitationTaskProgress.invitedUsersCount >= INVITE_TASK_REQUIRED_USERS && invitationTaskProgress.totalInvestmentFromInvites >= INVITE_TASK_REQUIRED_INVESTMENT_USD;
+                if (invitationTaskRewardClaimed) { this.showToast('You have already claimed this reward.', 'info'); this.setButtonLoading(btn, false); return; }
+                if (!isComplete) { this.showToast('Task requirements not yet met.', 'danger'); this.setButtonLoading(btn, false); return; }
+                try {
+                    await this.state.userRef.update({
+                        usd_balance: firebase.database.ServerValue.increment(INVITE_TASK_REWARD_USD),
+                        invitationTaskRewardClaimed: true
+                    });
+                    await this.logTransaction('bonus', INVITE_TASK_REWARD_USD, { reason: 'Invitation Task Reward' });
+                    this.showToast(`Congratulations! You've earned $${INVITE_TASK_REWARD_USD.toFixed(2)}!`, 'success');
+                } catch (error) {
+                    this.showToast(`An error occurred: ${error.message}`, 'danger');
+                } finally {
+                    this.setButtonLoading(btn, false);
                 }
             },
             handleEditUsername(e) { const btn = e.currentTarget; const container = this.state.ui.profileUsernameContainer; const currentUsername = this.state.userData.username; container.innerHTML = `<input type="text" id="edit-username-input" value="${currentUsername || ''}" class="inline-edit-input"> <button class="edit-btn" id="save-username-btn"><i class="fas fa-check"></i></button>`; document.getElementById('save-username-btn').addEventListener('click', async () => { const newUsername = document.getElementById('edit-username-input').value.trim(); if (newUsername && newUsername !== currentUsername) { await this.state.userRef.update({ username: newUsername }); await this.state.currentUser.updateProfile({ displayName: newUsername }); this.showToast('Username updated!', 'success'); } container.innerHTML = `<span id="profile-username">${newUsername || currentUsername}</span><button class="edit-btn" id="edit-username-btn"><i class="fas fa-pencil-alt"></i></button>`; document.getElementById('edit-username-btn').addEventListener('click', (e) => this.handleEditUsername(e)); }); },
