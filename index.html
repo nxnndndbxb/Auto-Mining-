@@ -1255,6 +1255,16 @@
                 this.state.ui.whatsappFollowBtn.addEventListener('click', e => this.handleWhatsAppTask(e));
                 this.state.ui.claimInviteTaskBtn.addEventListener('click', e => this.handleClaimInviteTask(e));
                 this.state.ui.collectBonusBtn.addEventListener('click', e => this.handleCollectInviteBonus(e));
+                // **[MODIFIED]** Add event listener for Milestone Rewards
+                this.state.ui.milestoneRewardsList.addEventListener('click', e => {
+                    const btn = e.target.closest('.btn-claim-milestone');
+                    if (btn && !btn.disabled) {
+                        const requiredUsers = parseInt(btn.dataset.reqUsers, 10);
+                        const rewardUSD = parseFloat(btn.dataset.rewardUsd);
+                        this.handleClaimMilestoneReward(requiredUsers, rewardUSD, btn);
+                    }
+                });
+
 
                 // Invite Level Click Listener
                 this.state.ui.referralLevelsList.addEventListener('click', e => this.handleLevelClick(e));
@@ -1569,35 +1579,66 @@
                     this.showToast('Failed to load referral data.', 'danger');
                 }
             },
-            // Rewards Page Logic
+            // **[MODIFIED]** Rewards Page Logic
             updateRewardsUI() {
                 const { active_referrals_count = 0, milestoneRewardsClaimed = {} } = this.state.userData;
                 this.state.ui.milestoneRewardsList.innerHTML = '';
-                this.config.MILESTONE_REWARDS.forEach((milestone, index) => {
+                this.config.MILESTONE_REWARDS.forEach(milestone => {
                     const isClaimed = milestoneRewardsClaimed[milestone.requiredUsers];
                     const isClaimable = !isClaimed && active_referrals_count >= milestone.requiredUsers;
+                    
                     let stateClass = '';
                     let buttonHtml = `<button class="btn btn-subtle" disabled>Locked</button>`;
+
                     if (isClaimed) {
                         stateClass = 'claimed';
                         buttonHtml = `<button class="btn btn-subtle" disabled><i class="fas fa-check"></i> Claimed</button>`;
                     } else if (isClaimable) {
                         stateClass = 'claimable';
-                        buttonHtml = `<button class="btn" onclick="App.handleClaimMilestoneReward(${milestone.requiredUsers}, ${milestone.rewardUSD})">Claim</button>`;
+                        buttonHtml = `<button class="btn btn-claim-milestone" data-req-users="${milestone.requiredUsers}" data-reward-usd="${milestone.rewardUSD}">
+                                        <span class="btn-text">Claim</span><div class="spinner-sm"></div>
+                                      </button>`;
                     }
+
                     const item = document.createElement('div');
                     item.className = `reward-item ${stateClass}`;
-                    item.innerHTML = `<div class="reward-info"><h4>Invite ${milestone.requiredUsers} Active Users</h4><p>Progress: ${Math.min(active_referrals_count, milestone.requiredUsers)} / ${milestone.requiredUsers}</p></div><div class="reward-action"><div class="reward-value">+$${milestone.rewardUSD.toFixed(2)}</div>${buttonHtml}</div>`;
+                    item.innerHTML = `<div class="reward-info">
+                                        <h4>Invite ${milestone.requiredUsers} Active Users</h4>
+                                        <p>Progress: ${Math.min(active_referrals_count, milestone.requiredUsers)} / ${milestone.requiredUsers}</p>
+                                      </div>
+                                      <div class="reward-action">
+                                        <div class="reward-value">+$${milestone.rewardUSD.toFixed(2)}</div>
+                                        ${buttonHtml}
+                                      </div>`;
                     this.state.ui.milestoneRewardsList.appendChild(item);
                 });
             },
-            async handleClaimMilestoneReward(requiredUsers, rewardUSD) {
-                if (this.state.userData.milestoneRewardsClaimed[requiredUsers]) { return this.showToast("Reward already claimed.", "info"); }
+            // **[MODIFIED]** New robust function to handle milestone reward claims
+            async handleClaimMilestoneReward(requiredUsers, rewardUSD, btn) {
+                // Re-verify conditions based on the latest state data
+                if (this.state.userData.milestoneRewardsClaimed && this.state.userData.milestoneRewardsClaimed[requiredUsers]) {
+                    return this.showToast("Reward already claimed.", "info");
+                }
+                const activeReferrals = this.state.userData.active_referrals_count || 0;
+                if (activeReferrals < requiredUsers) {
+                    this.showToast("You do not meet the requirements for this reward.", "danger");
+                    return; // Stop execution
+                }
+
+                this.setButtonLoading(btn, true);
                 try {
-                    await this.state.userRef.update({ usd_balance: firebase.database.ServerValue.increment(rewardUSD), [`milestoneRewardsClaimed/${requiredUsers}`]: true });
+                    await this.state.userRef.update({
+                        usd_balance: firebase.database.ServerValue.increment(rewardUSD),
+                        [`milestoneRewardsClaimed/${requiredUsers}`]: true
+                    });
                     await this.logTransaction('bonus', rewardUSD, { reason: `Milestone: ${requiredUsers} active referrals` });
-                    this.showToast(`Claimed $${rewardUSD.toFixed(2)} reward!`, 'success');
-                } catch (error) { this.showToast(`Error: ${error.message}`, 'danger'); }
+                    this.showToast(`Successfully claimed $${rewardUSD.toFixed(2)} reward!`, 'success');
+                    // The UI will auto-update upon Firebase data change, showing the 'Claimed' state.
+                } catch (error) {
+                    this.showToast(`Claim failed: ${error.message}`, 'danger');
+                    // On error, revert the button to its original state
+                    this.setButtonLoading(btn, false);
+                }
             },
              // Free Mining Page Logic
             updateFreeMiningUI() {
@@ -1632,8 +1673,6 @@
                     amountInput.value = '';
                 } catch (error) {
                     this.showToast(`Purchase failed: ${error.message}`, 'danger');
-                    // In a real app, you'd want to revert the balance deduction if the second part fails.
-                    // Firebase transactions would be ideal here.
                 } finally {
                     this.setButtonLoading(btn, false);
                 }
@@ -1826,7 +1865,7 @@
             },
         };
 
-        // Make the App object globally accessible for inline onclick handlers
+        // Make the App object globally accessible for inline onclick handlers if needed elsewhere
         window.App = App;
         App.init();
     });
