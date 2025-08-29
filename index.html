@@ -228,7 +228,7 @@
         #staking-rewards-value { color: var(--success-color); animation: reward-pulse-green 2.5s ease-in-out infinite; }
         .btn-stake { background: linear-gradient(45deg, var(--primary-accent), var(--secondary-accent)); box-shadow: 0 0 25px hsla(187, 76%, 62%, 0.4); }
         .btn-claim { background: linear-gradient(45deg, var(--warning-color), #ffb74d); color: #fff; box-shadow: 0 0 25px hsla(36, 100%, 50%, 0.4); }
-        #transaction-history-list, #invited-users-list { list-style-type: none; max-height: 400px; overflow-y: auto; padding-right: 10px; }
+        .history-list { list-style-type: none; max-height: 400px; overflow-y: auto; padding-right: 10px; }
         .transaction-item { display: flex; align-items: center; padding: 15px; margin-bottom: 10px; background-color: rgba(0,0,0,0.25); border-radius: 12px; border-left: 4px solid var(--text-secondary); transition: background-color 0.3s ease; }
         .transaction-item:hover { background-color: rgba(0,0,0,0.4); }
         .transaction-item.buy, .transaction-item.deposit, .transaction-item.mining_profit, .transaction-item.stake_reward, .transaction-item.invite_bonus, .transaction-item.nft_profit { border-left-color: var(--success-color); }
@@ -400,7 +400,7 @@
         <main class="landing-main">
             <section class="landing-hero">
                 <h1>Unlock the Future of Digital Wealth</h1>
-                <p>Welcome to CDNC Coin, the next-generation platform where your digital assets work for you. Engage in lifetime mining, stake your holdings, and build your network to maximize your earnings.</p>
+                <p>Welcome to CDNC Coin, the next-generation platform where your digital assets work for you. Engage in powerful automated mining, stake your holdings, and build your network to maximize your earnings.</p>
                 <button class="btn enter-app-btn">Get Started Now</button>
                 <div class="scroll-down-indicator">
                     <i class="fas fa-chevron-down"></i>
@@ -409,25 +409,25 @@
             
             <section class="landing-section" id="feature-mining">
                 <div class="landing-section-header">
-                    <h2>Lifetime Mining Engine</h2>
-                    <p>Activate our powerful mining engine with a one-time investment and earn passive income forever. No contracts, no renewals—just continuous profit.</p>
+                    <h2>Automated Mining Engine</h2>
+                    <p>Activate our powerful mining engine with a one-time investment and earn passive income until you've earned double your investment. No contracts, no renewals—just continuous profit.</p>
                 </div>
                 <div class="feature-grid">
                     <div class="feature-card">
                         <div class="feature-icon"><i class="fas fa-rocket"></i></div>
-                        <h3>Permanent Investment</h3>
-                        <p>Your investment is locked in for life, continuously generating returns without any further action required from you.</p>
+                        <h3>Smart Investment</h3>
+                        <p>Your investment is locked in, generating returns until you've earned a total of 200%. Your principal is secure and works for you.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
                         <h3>Daily Returns</h3>
-                        <p>The mining engine produces a consistent 3% daily return on your total investment, paid directly to you in CDNC Coin.</p>
-                        <div class="highlight">3% Daily Profit</div>
+                        <p>The mining engine produces a consistent 2% daily return on your total investment, paid directly to you in CDNC Coin.</p>
+                        <div class="highlight">2% Daily Profit (200% Total)</div>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon"><i class="fas fa-bolt"></i></div>
                         <h3>Boost Anytime</h3>
-                        <p>Increase your earning potential at any moment by boosting your investment, enhancing your daily profit rate instantly.</p>
+                        <p>Increase your earning potential at any moment by boosting your investment, which also increases your total profit cap.</p>
                     </div>
                 </div>
             </section>
@@ -440,9 +440,9 @@
                 <div class="feature-grid">
                      <div class="feature-card">
                         <div class="feature-icon"><i class="fas fa-piggy-bank"></i></div>
-                        <h3>Generous APY</h3>
-                        <p>Earn a competitive 2.8% daily reward on your staked CDNC. Watch your holdings grow automatically every single day.</p>
-                        <div class="highlight">2.8% Daily Reward</div>
+                        <h3>Steady Growth</h3>
+                        <p>Earn a competitive 1% daily reward on your staked CDNC, with a total return cap of 5% on your staked amount.</p>
+                        <div class="highlight">1% Daily Reward (5% Total)</div>
                     </div>
                      <div class="feature-card">
                         <div class="feature-icon"><i class="fas fa-hand-holding-dollar"></i></div>
@@ -576,12 +576,12 @@
             </header>
             
             <div class="content-panel" id="mining-hub">
-                <h3>Lifetime Mining Engine</h3>
+                <h3>Automated Mining Engine</h3>
                 <div id="mining-hub-idle">
                     <!-- Standard message -->
                     <div id="standard-mining-info">
                         <div class="icon"><i class="fas fa-rocket"></i></div>
-                        <p>Make a one-time investment to start the mining engine. Your investment is permanent and generates a 3% daily return, paid in CDNC. You can boost your investment anytime.</p>
+                        <p>Make a one-time investment to start the mining engine. It generates a 2% daily return until you've earned a total of 200% of your investment. You can boost your investment anytime.</p>
                         <button class="btn full-width" id="start-mining-modal-btn"><span class="btn-text"><i class="fas fa-play"></i> Start Mining Now</span></button>
                     </div>
                     <!-- Security Gate Message -->
@@ -612,6 +612,15 @@
                                 <div class="particle" style="--angle: 240deg"></div>
                                 <div class="particle" style="--angle: 300deg"></div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="mining-progress-container" style="margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: var(--text-secondary);">
+                            <span>Total Profit Progress (200% Cap)</span>
+                            <span id="mining-progress-text">$0.00 / $0.00</span>
+                        </div>
+                        <div class="nft-progress-bar">
+                            <div class="nft-progress-bar-inner" id="mining-progress-bar" style="width: 0%;"></div>
                         </div>
                     </div>
                     <div class="mining-stat"><span class="label">Total Investment</span><span class="value" id="mining-investment-value">$0.00</span></div>
@@ -647,6 +656,10 @@
                     <button class="btn btn-sell" id="sell-btn"><i class="fas fa-arrow-down"></i>&nbsp; <span class="btn-text">Sell</span><div class="spinner-sm"></div></button>
                 </div>
             </div>
+            <div class="content-panel">
+                <h3>Trade History</h3>
+                <ul id="trade-history-list" class="history-list"><p class="info-text" id="no-trade-transactions-msg">No trade transactions yet.</p></ul>
+            </div>
         </section>
 
         <!-- Stake Page -->
@@ -657,7 +670,8 @@
                     <div class="staking-stat"><span class="label">Staked Balance</span><span class="value" id="staked-balance-value">0.00</span></div>
                     <div class="staking-stat"><span class="label">Claimable Rewards</span><span class="value" id="staking-rewards-value">0.00</span></div>
                 </div>
-                <p class="info-text" style="margin-bottom: 25px;">Stake your CDNC to earn a <b>2.8% daily reward</b>. Rewards accumulate and can be claimed at any time. You can unstake your principal at any time.</p>
+                <p class="info-text" style="margin-bottom: 10px;">Stake your CDNC to earn a <b>1% daily reward</b>. Rewards accumulate and can be claimed at any time.</p>
+                <p class="info-text" style="margin-bottom: 25px;">A total return cap of <b>5%</b> applies to your staked amount. Rewards will stop once this cap is reached.</p>
                 <button class="btn btn-claim full-width" id="claim-staking-rewards-btn" style="margin-bottom: 20px;" disabled><span class="btn-text">Claim Rewards</span><div class="spinner-sm"></div></button>
 
                 <form id="stake-form">
@@ -667,6 +681,10 @@
                         <button type="button" class="btn btn-sell" id="unstake-btn"><i class="fas fa-unlock"></i>&nbsp; <span class="btn-text">Unstake</span><div class="spinner-sm"></div></button>
                     </div>
                 </form>
+            </div>
+            <div class="content-panel">
+                <h3>Staking History</h3>
+                <ul id="staking-history-list" class="history-list"><p class="info-text" id="no-staking-transactions-msg">No staking transactions yet.</p></ul>
             </div>
         </section>
 
@@ -697,8 +715,8 @@
                 </div>
             </div>
             <div class="content-panel">
-                <h3>Transaction History</h3>
-                <ul id="transaction-history-list"><p class="info-text" id="no-transactions-msg">No transactions yet.</p></ul>
+                <h3>Wallet & Mining History</h3>
+                <ul id="wallet-history-list" class="history-list"><p class="info-text" id="no-wallet-transactions-msg">No transactions yet.</p></ul>
             </div>
         </section>
 
@@ -719,9 +737,7 @@
                 <div class="profile-actions-grid">
                     <div class="action-card invite" data-page-target="invite-page"><i class="fas fa-users-rays"></i><span>Invite</span></div>
                     <div class="action-card rewards" data-page-target="rewards-page"><i class="fas fa-trophy"></i><span>Rewards</span></div>
-                    <!-- [NEW] NFT Button -->
                     <div class="action-card nft" data-page-target="nft-page"><i class="fas fa-gem"></i><span>NFTs</span></div>
-                    <!-- [NEW] Sell Products Button -->
                     <div class="action-card sell-products" data-page-target="sell-products-page"><i class="fas fa-store"></i><span>Sell Products</span></div>
                     <div class="action-card free-mining" data-page-target="free-mining-page"><i class="fas fa-bolt-lightning"></i><span>Free Mining</span></div>
                     <div class="action-card about" data-page-target="about-us-page"><i class="fas fa-info-circle"></i><span>About Us</span></div>
@@ -755,6 +771,10 @@
                 <div id="referral-levels-list">
                     <!-- JS will populate this -->
                 </div>
+            </div>
+             <div class="content-panel">
+                <h3>Bonus History</h3>
+                <ul id="invite-history-list" class="history-list"><p class="info-text" id="no-invite-transactions-msg">No referral bonuses collected yet.</p></ul>
             </div>
         </section>
 
@@ -913,6 +933,10 @@
             <div class="content-panel" id="no-nfts-msg" style="display: none;">
                 <p class="info-text">You have not purchased any NFTs yet. Visit the NFT Collection to get started.</p>
             </div>
+             <div class="content-panel">
+                <h3>NFT History</h3>
+                <ul id="nft-history-list" class="history-list"><p class="info-text" id="no-nft-transactions-msg">No NFT transactions yet.</p></ul>
+            </div>
         </section>
 
         <!-- [NEW] Sell Products Page -->
@@ -957,7 +981,7 @@
         <div class="modal-content content-panel">
             <button class="modal-close-btn" data-modal-id="referral-list-modal">×</button>
             <h3 id="referral-list-modal-title">Referrals</h3>
-            <ul id="referral-list-modal-body" class="transaction-history-list" style="padding-right: 0;">
+            <ul id="referral-list-modal-body" class="history-list" style="padding-right: 0;">
                 <!-- JS will populate this -->
                 <p class="info-text">No users found at this level.</p>
             </ul>
@@ -987,12 +1011,16 @@
                 WITHDRAWAL_FEE_PERCENT: 0.05,
                 MIN_WITHDRAWAL_USD: 0,
                 PRELOADER_TIMEOUT: 8000,
-                MINING_DAILY_RATE_PERCENT: 0.03, // 3%
+                // Mining Config
+                MINING_DAILY_RATE_PERCENT: 0.02, // 2%
+                MINING_TOTAL_RETURN_PERCENT: 2.00, // 200%
                 MINING_MIN_INVESTMENT_USD: 1,
                 MINING_MAX_INVESTMENT_USD: 10000,
                 MINIMUM_PROFIT_CLAIM_CDNC: 0.000001,
-                STAKING_DAILY_RATE_PERCENT: 0.028, // 2.8%
-                // [NEW] NFT Config
+                // [EDITED] Staking Config
+                STAKING_DAILY_RATE_PERCENT: 0.01,  // 1%
+                STAKING_TOTAL_RETURN_PERCENT: 0.05, // 5%
+                // NFT Config
                 NFT_DAILY_RATE_PERCENT: 0.03, // 3%
                 NFT_TOTAL_RETURN_PERCENT: 3.00, // 300%
                 NFT_DURATION_DAYS: 100,
@@ -1029,7 +1057,7 @@
                 preloaderTimeoutId: null,
                 miningProfitInterval: null,
                 stakingRewardInterval: null,
-                nftIntervals: {}, // [NEW] To store intervals for each NFT
+                nftIntervals: {},
                 ui: {},
             },
 
@@ -1094,9 +1122,11 @@
                     loginPage: document.getElementById('login-page-container'), registerPage: document.getElementById('register-page-container'), loginForm: document.getElementById('login-form'), registerForm: document.getElementById('register-form'), registerRefCodeInput: document.getElementById('register-ref-code'),
                     welcomeUser: document.getElementById('welcome-user'), homeCoinPrice: document.getElementById('home-coin-price'), homeUsdBalance: document.getElementById('home-usd-balance'), homeCdncBalance: document.getElementById('home-cdnc-balance'), homeHoldingsValue: document.getElementById('home-holdings-value'),
                     miningHubIdle: document.getElementById('mining-hub-idle'), miningHubActive: document.getElementById('mining-hub-active'), miningInvestmentValue: document.getElementById('mining-investment-value'), miningProfitRate: document.getElementById('mining-profit-rate'), miningAccumulatedProfit: document.getElementById('mining-accumulated-profit'), claimMiningProfitBtn: document.getElementById('claim-mining-profit-btn'), startMiningForm: document.getElementById('start-mining-form'), miningModalUsdBalance: document.getElementById('mining-modal-usd-balance'), miningInvestmentAmountInput: document.getElementById('mining-investment-amount'), miningModalProfitPreview: document.getElementById('mining-modal-profit-preview'), boostMiningModalBtn: document.getElementById('boost-mining-modal-btn'), boostMiningForm: document.getElementById('boost-mining-form'), boostModalCurrentInvestment: document.getElementById('boost-modal-current-investment'), boostModalUsdBalance: document.getElementById('boost-modal-usd-balance'), boostInvestmentAmountInput: document.getElementById('boost-investment-amount'), boostModalNewTotal: document.getElementById('boost-modal-new-total'), boostModalProfitPreview: document.getElementById('boost-modal-profit-preview'),
+                    miningProgressText: document.getElementById('mining-progress-text'),
+                    miningProgressBar: document.getElementById('mining-progress-bar'),
                     standardMiningInfo: document.getElementById('standard-mining-info'), miningGateInfo: document.getElementById('mining-gate-info'), miningGateProgress: document.getElementById('mining-gate-progress'),
                     tradeCoinPrice: document.getElementById('trade-coin-price'), tradeUsdBalance: document.getElementById('trade-usd-balance'), tradeCdncBalance: document.getElementById('trade-cdnc-balance'),
-                    walletUsdBalance: document.getElementById('wallet-usd-balance'), walletOnHoldBalance: document.getElementById('wallet-on-hold-balance'), rechargeForm: document.getElementById('recharge-form'), withdrawalForm: document.getElementById('withdrawal-form'), transactionList: document.getElementById('transaction-history-list'), noTransactionsMsg: document.getElementById('no-transactions-msg'),
+                    walletUsdBalance: document.getElementById('wallet-usd-balance'), walletOnHoldBalance: document.getElementById('wallet-on-hold-balance'), rechargeForm: document.getElementById('recharge-form'), withdrawalForm: document.getElementById('withdrawal-form'),
                     stakedBalanceValue: document.getElementById('staked-balance-value'), stakingRewardsValue: document.getElementById('staking-rewards-value'), stakeForm: document.getElementById('stake-form'), stakeAmountInput: document.getElementById('stake-amount'), unstakeBtn: document.getElementById('unstake-btn'), claimStakingRewardsBtn: document.getElementById('claim-staking-rewards-btn'),
                     profileUsernameDisplay: document.getElementById('profile-username-display'), profileEmailDisplay: document.getElementById('profile-email-display'), profileUidDisplay: document.getElementById('profile-uid-display'),
                     changePasswordForm: document.getElementById('change-password-form'),
@@ -1107,13 +1137,20 @@
                     milestoneRewardsList: document.getElementById('milestone-rewards-list'),
                     freeMiningProgress: document.getElementById('free-mining-progress'),
                     referralListModal: document.getElementById('referral-list-modal'), referralListModalTitle: document.getElementById('referral-list-modal-title'), referralListModalBody: document.getElementById('referral-list-modal-body'),
-                    // [NEW] NFT Elements
                     nftPageUsdBalance: document.getElementById('nft-page-usd-balance'),
                     nftGridContainer: document.getElementById('nft-grid-container'),
                     myNftsListPage: document.getElementById('my-nfts-page'),
                     myNftsList: document.getElementById('my-nfts-list'),
                     noNftsMsg: document.getElementById('no-nfts-msg'),
                     viewMyNftsBtn: document.getElementById('view-my-nfts-btn'),
+                    // [NEW] History List Elements
+                    historyLists: {
+                        wallet: { list: document.getElementById('wallet-history-list'), msg: document.getElementById('no-wallet-transactions-msg') },
+                        staking: { list: document.getElementById('staking-history-list'), msg: document.getElementById('no-staking-transactions-msg') },
+                        trade: { list: document.getElementById('trade-history-list'), msg: document.getElementById('no-trade-transactions-msg') },
+                        invite: { list: document.getElementById('invite-history-list'), msg: document.getElementById('no-invite-transactions-msg') },
+                        nft: { list: document.getElementById('nft-history-list'), msg: document.getElementById('no-nft-transactions-msg') },
+                    }
                 };
             },
             
@@ -1162,18 +1199,38 @@
                 this.updateInviteUI();
                 this.updateRewardsUI();
                 this.updateFreeMiningUI();
-                this.updateMyNftsUI(); // [NEW] Update NFT UI
+                this.updateMyNftsUI();
             },
 
-            updateTransactionHistory(transactions) {
-                this.state.ui.transactionList.innerHTML = '';
-                if (!transactions || Object.keys(transactions).length === 0) {
-                    this.state.ui.noTransactionsMsg.style.display = 'block';
+            updateAllHistories(transactions) {
+                const txArray = transactions ? Object.values(transactions).sort((a, b) => b.timestamp - a.timestamp) : [];
+
+                const historyConfig = {
+                    wallet: ['deposit', 'withdrawal', 'mining_profit', 'mining_invest', 'bonus'],
+                    staking: ['stake', 'unstake', 'stake_reward'],
+                    trade: ['buy', 'sell'],
+                    invite: ['invite_bonus'],
+                    nft: ['nft_purchase', 'nft_profit']
+                };
+
+                for (const [key, types] of Object.entries(historyConfig)) {
+                    const filteredTxs = txArray.filter(tx => types.includes(tx.type));
+                    this.populateHistoryList(this.state.ui.historyLists[key], filteredTxs);
+                }
+            },
+
+            populateHistoryList(listConfig, transactions) {
+                if (!listConfig || !listConfig.list || !listConfig.msg) return;
+                const { list, msg } = listConfig;
+
+                list.innerHTML = '';
+                if (transactions.length === 0) {
+                    msg.style.display = 'block';
                     return;
                 }
-                this.state.ui.noTransactionsMsg.style.display = 'none';
-                const sortedTxs = Object.values(transactions).sort((a, b) => b.timestamp - a.timestamp);
-                sortedTxs.forEach(tx => {
+                msg.style.display = 'none';
+
+                transactions.forEach(tx => {
                     const item = document.createElement('li');
                     const isPending = tx.details?.status === 'pending';
                     item.className = `transaction-item ${tx.type.toLowerCase()} ${isPending ? 'pending' : ''}`;
@@ -1185,12 +1242,15 @@
                     } else {
                         amountDisplay = `${Number(tx.amount).toFixed(4)} CDNC`;
                     }
-                    const typeDisplay = isPending ? `${tx.type.replace(/_/g, ' ')} (Pending)` : (tx.details?.reason || tx.type.replace(/_/g, ' '));
+                    const typeText = tx.type.replace(/_/g, ' ');
+                    const statusText = isPending ? ` <span style="color: var(--warning-color); font-weight: normal;">(Pending)</span>` : (tx.details?.status === 'rejected' ? ` <span style="color: var(--danger-color); font-weight: normal;">(Rejected)</span>` : '');
+                    const typeDisplay = (tx.details?.reason || typeText) + statusText;
+
                     item.innerHTML = `<div class="icon"><i class="fas ${icons[tx.type.toLowerCase()] || 'fa-exchange-alt'}"></i></div><div class="details"><div class="type">${typeDisplay}</div><div class="date">${new Date(tx.timestamp).toLocaleString()}</div></div><div class="amount">${amountDisplay}</div>`;
-                    this.state.ui.transactionList.appendChild(item);
+                    list.appendChild(item);
                 });
             },
-            
+
             // --- [4] EVENT LISTENERS & HANDLERS ---
             bindEventListeners() {
                 // Landing Page
@@ -1255,7 +1315,6 @@
                 this.state.ui.whatsappFollowBtn.addEventListener('click', e => this.handleWhatsAppTask(e));
                 this.state.ui.claimInviteTaskBtn.addEventListener('click', e => this.handleClaimInviteTask(e));
                 this.state.ui.collectBonusBtn.addEventListener('click', e => this.handleCollectInviteBonus(e));
-                // **[MODIFIED]** Add event listener for Milestone Rewards
                 this.state.ui.milestoneRewardsList.addEventListener('click', e => {
                     const btn = e.target.closest('.btn-claim-milestone');
                     if (btn && !btn.disabled) {
@@ -1265,11 +1324,10 @@
                     }
                 });
 
-
                 // Invite Level Click Listener
                 this.state.ui.referralLevelsList.addEventListener('click', e => this.handleLevelClick(e));
 
-                // [NEW] NFT Event Listeners
+                // NFT Event Listeners
                 this.state.ui.viewMyNftsBtn.addEventListener('click', () => this.showPage('my-nfts-page'));
                 this.state.ui.nftGridContainer.addEventListener('click', e => {
                     if (e.target.matches('.btn-buy-nft, .btn-buy-nft *')) {
@@ -1363,9 +1421,9 @@
                         username, email, uid: user.uid, referralCode, referredBy: refCode || null,
                         usd_balance: 0, cdnc_balance: 0, balance_on_hold: 0,
                         unclaimed_invite_bonus: 0, active_referrals_count: 0,
-                        mining: { totalInvestmentUSD: 0, lastProfitClaimTimestamp: 0, firstInvestmentProcessed: false },
-                        staking: { stakedAmountCDNC: 0, lastRewardTimestamp: 0, claimableRewards: 0 },
-                        nfts: {}, // [NEW] Add nfts object
+                        mining: { totalInvestmentUSD: 0, lastProfitClaimTimestamp: 0, firstInvestmentProcessed: false, totalProfitGeneratedUSD: 0 },
+                        staking: { stakedAmountCDNC: 0, lastRewardTimestamp: 0, claimableRewards: 0, totalRewardsGenerated: 0 }, // Added totalRewardsGenerated
+                        nfts: {},
                         lastCheckinTimestamp: 0, hasFollowedWhatsApp: false,
                         invitationTaskProgress: { invitedUsersCount: 0, totalInvestmentFromInvites: 0, investedUserUIDs: {} },
                         invitationTaskRewardClaimed: false,
@@ -1465,8 +1523,48 @@
             openBoostMiningModal() { if (!this.state.userData?.mining) return; this.state.ui.boostModalCurrentInvestment.textContent = `$${(this.state.userData.mining.totalInvestmentUSD || 0).toFixed(2)}`; this.state.ui.boostModalUsdBalance.textContent = `$${(this.state.userData.usd_balance || 0).toFixed(2)}`; this.state.ui.boostInvestmentAmountInput.value = ''; this.updateBoostProfitPreview(); this.showModal('boost-mining-modal'); },
             updateBoostProfitPreview() { if (this.state.coinPrice <= 0) { this.state.ui.boostModalProfitPreview.textContent = '... CDNC'; return; } const newTotal = (this.state.userData?.mining?.totalInvestmentUSD || 0) + (parseFloat(this.state.ui.boostInvestmentAmountInput.value) || 0); const profitCDNC = (newTotal * this.config.MINING_DAILY_RATE_PERCENT) / this.state.coinPrice; this.state.ui.boostModalNewTotal.textContent = `$${newTotal.toFixed(2)}`; this.state.ui.boostModalProfitPreview.textContent = `${profitCDNC.toFixed(4)} CDNC`; },
             async handleBoostMining(e) { e.preventDefault(); const btn = e.target.querySelector('button'); const boostAmount = parseFloat(this.state.ui.boostInvestmentAmountInput.value); if (isNaN(boostAmount) || boostAmount <= 0) return this.showToast(`Please enter a valid amount.`, 'danger'); if (boostAmount > this.state.userData.usd_balance) return this.showToast('Insufficient USD balance.', 'danger'); this.setButtonLoading(btn, true); try { await this.state.userRef.update({ usd_balance: firebase.database.ServerValue.increment(-boostAmount), 'mining/totalInvestmentUSD': firebase.database.ServerValue.increment(boostAmount) }); await this.logTransaction('mining_invest', boostAmount, { reason: `Boosted by $${boostAmount}`}); this.showToast(`Boosted investment by $${boostAmount.toFixed(2)}!`, 'success'); this.hideModal('boost-mining-modal'); } catch (error) { this.showToast(`Error: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
-            async handleClaimMiningProfit(e) { const btn = e.currentTarget; const profitCDNC = this.calculateMiningProfit(); if (profitCDNC < this.config.MINIMUM_PROFIT_CLAIM_CDNC) { return this.showToast("Profit is too low to claim.", "info"); } this.setButtonLoading(btn, true); try { await this.state.userRef.transaction(data => { if (data) { data.cdnc_balance = (data.cdnc_balance || 0) + this.calculateMiningProfit(data.mining); data.mining.lastProfitClaimTimestamp = firebase.database.ServerValue.TIMESTAMP; } return data; }); await this.logTransaction('mining_profit', profitCDNC); this.showToast(`Claimed ${profitCDNC.toFixed(6)} CDNC!`, 'success'); } catch(error) { this.showToast(`Error: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
-            calculateMiningProfit(miningData = this.state.userData.mining) { if (!miningData?.totalInvestmentUSD || !miningData.lastProfitClaimTimestamp || this.state.coinPrice <= 0) return 0; const elapsedMs = Date.now() - miningData.lastProfitClaimTimestamp; if (elapsedMs <= 0) return 0; const profitPerDayCDNC = (miningData.totalInvestmentUSD * this.config.MINING_DAILY_RATE_PERCENT) / this.state.coinPrice; return (elapsedMs / 86400000) * profitPerDayCDNC; },
+            
+            async handleClaimMiningProfit(e) {
+                const btn = e.currentTarget;
+                const profitCDNC = this.calculateMiningProfit();
+                if (profitCDNC < this.config.MINIMUM_PROFIT_CLAIM_CDNC) {
+                    return this.showToast("Profit is too low to claim.", "info");
+                }
+                this.setButtonLoading(btn, true);
+                try {
+                    await this.state.userRef.transaction(data => {
+                        if (data && data.mining) {
+                            const currentProfitCDNC = this.calculateMiningProfit(data.mining);
+                            const currentProfitUSD = currentProfitCDNC * this.state.coinPrice;
+                            
+                            data.cdnc_balance = (data.cdnc_balance || 0) + currentProfitCDNC;
+                            data.mining.lastProfitClaimTimestamp = firebase.database.ServerValue.TIMESTAMP;
+                            data.mining.totalProfitGeneratedUSD = (data.mining.totalProfitGeneratedUSD || 0) + currentProfitUSD;
+                        }
+                        return data;
+                    });
+                    await this.logTransaction('mining_profit', profitCDNC);
+                    this.showToast(`Claimed ${profitCDNC.toFixed(6)} CDNC!`, 'success');
+                } catch(error) {
+                    this.showToast(`Error: ${error.message}`, 'danger');
+                } finally {
+                    this.setButtonLoading(btn, false);
+                }
+            },
+
+            calculateMiningProfit(miningData = this.state.userData.mining) {
+                if (!miningData?.totalInvestmentUSD || !miningData.lastProfitClaimTimestamp || this.state.coinPrice <= 0) return 0;
+                const totalReturnCapUSD = miningData.totalInvestmentUSD * this.config.MINING_TOTAL_RETURN_PERCENT;
+                const totalProfitGeneratedUSD = miningData.totalProfitGeneratedUSD || 0;
+                const remainingProfitCapacityUSD = totalReturnCapUSD - totalProfitGeneratedUSD;
+                if (remainingProfitCapacityUSD <= 0) return 0;
+                const elapsedMs = Date.now() - miningData.lastProfitClaimTimestamp;
+                if (elapsedMs <= 0) return 0;
+                const potentialProfitUSD = (elapsedMs / 86400000) * (miningData.totalInvestmentUSD * this.config.MINING_DAILY_RATE_PERCENT);
+                const actualProfitUSD = Math.min(potentialProfitUSD, remainingProfitCapacityUSD);
+                return actualProfitUSD / this.state.coinPrice;
+            },
+
             updateMiningUI() {
                 if(this.state.miningProfitInterval) clearInterval(this.state.miningProfitInterval);
                 const miningData = this.state.userData?.mining;
@@ -1474,13 +1572,33 @@
                     this.state.ui.miningHubIdle.style.display = 'none';
                     this.state.ui.miningHubActive.style.display = 'block';
                     const investment = miningData.totalInvestmentUSD;
+                    const totalProfitGeneratedUSD = miningData.totalProfitGeneratedUSD || 0;
+                    const totalReturnCapUSD = investment * this.config.MINING_TOTAL_RETURN_PERCENT;
+                    const progressPercent = Math.min((totalProfitGeneratedUSD / totalReturnCapUSD) * 100, 100);
+                    this.state.ui.miningProgressText.textContent = `$${totalProfitGeneratedUSD.toFixed(2)} / $${totalReturnCapUSD.toFixed(2)}`;
+                    this.state.ui.miningProgressBar.style.width = `${progressPercent}%`;
+
+                    if (totalProfitGeneratedUSD >= totalReturnCapUSD) {
+                        this.state.ui.miningInvestmentValue.textContent = `$${investment.toFixed(2)}`;
+                        this.state.ui.miningProfitRate.textContent = '0.0000 CDNC';
+                        this.state.ui.miningAccumulatedProfit.textContent = `Completed`;
+                        this.state.ui.claimMiningProfitBtn.disabled = true;
+                        this.state.ui.claimMiningProfitBtn.querySelector('.btn-text').innerHTML = `<i class="fas fa-check"></i> Completed`;
+                        this.state.ui.boostMiningModalBtn.disabled = true;
+                        return;
+                    }
+
+                    this.state.ui.boostMiningModalBtn.disabled = false;
                     this.state.ui.miningInvestmentValue.textContent = `$${investment.toFixed(2)}`;
                     this.state.ui.miningProfitRate.textContent = this.state.coinPrice > 0 ? `${((investment * this.config.MINING_DAILY_RATE_PERCENT) / this.state.coinPrice).toFixed(4)} CDNC` : '... CDNC';
+                    
                     this.state.miningProfitInterval = setInterval(() => {
                         const accumulatedProfit = this.calculateMiningProfit();
                         this.state.ui.miningAccumulatedProfit.textContent = `${accumulatedProfit.toFixed(8)} CDNC`;
                         this.state.ui.claimMiningProfitBtn.disabled = accumulatedProfit < this.config.MINIMUM_PROFIT_CLAIM_CDNC;
+                        this.state.ui.claimMiningProfitBtn.querySelector('.btn-text').innerHTML = `<i class="fas fa-hand-holding-dollar"></i> Claim Profit`;
                     }, 1000);
+
                 } else {
                     this.state.ui.miningHubActive.style.display = 'none';
                     this.state.ui.miningHubIdle.style.display = 'block';
@@ -1496,11 +1614,127 @@
                 }
             },
 
-            // --- [5.2] Staking Logic ---
-            updateStakingUI() { const stakingData = this.state.userData?.staking || {}; if(this.state.stakingRewardInterval) clearInterval(this.state.stakingRewardInterval); this.state.ui.stakedBalanceValue.textContent = (stakingData.stakedAmountCDNC || 0).toFixed(4); this.state.stakingRewardInterval = setInterval(() => { const stakedAmount = stakingData.stakedAmountCDNC || 0; if (stakedAmount > 0) { const newReward = ((Date.now() - (stakingData.lastRewardTimestamp || Date.now())) / 86400000) * (stakedAmount * this.config.STAKING_DAILY_RATE_PERCENT); const totalClaimable = (stakingData.claimableRewards || 0) + newReward; this.state.ui.stakingRewardsValue.textContent = totalClaimable.toFixed(8); this.state.ui.claimStakingRewardsBtn.disabled = totalClaimable < 0.00000001; } else { this.state.ui.stakingRewardsValue.textContent = '0.00000000'; this.state.ui.claimStakingRewardsBtn.disabled = true; } }, 1000); },
-            async handleClaimStakingRewards(e) { const btn = e.currentTarget; this.setButtonLoading(btn, true); const stakingData = this.state.userData.staking; const stakedAmount = stakingData.stakedAmountCDNC || 0; const lastTime = stakingData.lastRewardTimestamp || Date.now(); const newReward = ((Date.now() - lastTime) / 86400000) * (stakedAmount * this.config.STAKING_DAILY_RATE_PERCENT); const totalClaimable = (stakingData.claimableRewards || 0) + newReward; if (totalClaimable <= 0) { this.setButtonLoading(btn, false); return this.showToast("No rewards to claim.", "info"); } try { await this.state.userRef.child('staking').update({ lastRewardTimestamp: firebase.database.ServerValue.TIMESTAMP, claimableRewards: 0 }); await this.state.userRef.update({ cdnc_balance: firebase.database.ServerValue.increment(totalClaimable) }); await this.logTransaction('stake_reward', totalClaimable); this.showToast(`Claimed ${totalClaimable.toFixed(8)} CDNC!`, 'success'); } catch (error) { this.showToast(`Claim failed: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
-            async handleStake(e) { e.preventDefault(); const btn = e.target.querySelector('#stake-btn'); const amount = parseFloat(this.state.ui.stakeAmountInput.value); if (isNaN(amount) || amount <= 0) return this.showToast('Enter a valid amount.', 'danger'); if (amount > (this.state.userData.cdnc_balance || 0)) return this.showToast('Insufficient CDNC balance.', 'danger'); this.setButtonLoading(btn, true); try { await this.handleClaimStakingRewards({ currentTarget: this.state.ui.claimStakingRewardsBtn }); await this.state.userRef.transaction(d => { if (d) { d.cdnc_balance = (d.cdnc_balance || 0) - amount; if (!d.staking) d.staking = {}; d.staking.stakedAmountCDNC = (d.staking.stakedAmountCDNC || 0) + amount; d.staking.lastRewardTimestamp = firebase.database.ServerValue.TIMESTAMP; } return d; }); await this.logTransaction('stake', amount); this.showToast(`Staked ${amount.toFixed(4)} CDNC!`, 'success'); this.state.ui.stakeAmountInput.value = ''; } catch (error) { this.showToast(`Staking failed: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
-            async handleUnstake(e) { const btn = e.currentTarget; const amount = parseFloat(this.state.ui.stakeAmountInput.value); const stakedAmount = this.state.userData?.staking?.stakedAmountCDNC || 0; if (isNaN(amount) || amount <= 0) return this.showToast('Enter a valid amount.', 'danger'); if (amount > stakedAmount) return this.showToast('Amount exceeds staked balance.', 'danger'); this.setButtonLoading(btn, true); try { await this.handleClaimStakingRewards({ currentTarget: this.state.ui.claimStakingRewardsBtn }); await this.state.userRef.transaction(d => { if (d?.staking) { d.cdnc_balance = (d.cdnc_balance || 0) + amount; d.staking.stakedAmountCDNC -= amount; d.staking.lastRewardTimestamp = firebase.database.ServerValue.TIMESTAMP; } return d; }); await this.logTransaction('unstake', amount); this.showToast(`Unstaked ${amount.toFixed(4)} CDNC!`, 'success'); this.state.ui.stakeAmountInput.value = ''; } catch (error) { this.showToast(`Unstaking failed: ${error.message}`, 'danger'); } finally { this.setButtonLoading(btn, false); } },
+            // --- [5.2] [EDITED] Staking Logic ---
+            calculateStakingReward(stakingData = this.state.userData.staking) {
+                if (!stakingData?.stakedAmountCDNC || stakingData.stakedAmountCDNC <= 0) return 0;
+
+                const stakedAmount = stakingData.stakedAmountCDNC;
+                const totalReturnCap = stakedAmount * this.config.STAKING_TOTAL_RETURN_PERCENT;
+                const totalRewardsGenerated = stakingData.totalRewardsGenerated || 0;
+                const remainingRewardCapacity = totalReturnCap - totalRewardsGenerated;
+
+                if (remainingRewardCapacity <= 0) return 0; // Cap reached
+
+                const elapsedMs = Date.now() - (stakingData.lastRewardTimestamp || Date.now());
+                if (elapsedMs <= 0) return 0;
+                
+                const potentialReward = (elapsedMs / 86400000) * (stakedAmount * this.config.STAKING_DAILY_RATE_PERCENT);
+                const actualReward = Math.min(potentialReward, remainingRewardCapacity);
+                
+                return (stakingData.claimableRewards || 0) + actualReward;
+            },
+
+            updateStakingUI() { 
+                const stakingData = this.state.userData?.staking || {}; 
+                if(this.state.stakingRewardInterval) clearInterval(this.state.stakingRewardInterval); 
+                this.state.ui.stakedBalanceValue.textContent = (stakingData.stakedAmountCDNC || 0).toFixed(4); 
+                
+                this.state.stakingRewardInterval = setInterval(() => { 
+                    const totalClaimable = this.calculateStakingReward();
+                    this.state.ui.stakingRewardsValue.textContent = totalClaimable.toFixed(8); 
+                    this.state.ui.claimStakingRewardsBtn.disabled = totalClaimable < 0.00000001; 
+                }, 1000); 
+            },
+
+            async handleClaimStakingRewards(e) {
+                const btn = e.currentTarget;
+                this.setButtonLoading(btn, true);
+                
+                const totalClaimable = this.calculateStakingReward();
+                if (totalClaimable <= 0) {
+                    this.setButtonLoading(btn, false);
+                    return this.showToast("No rewards to claim.", "info");
+                }
+
+                try {
+                    await this.state.userRef.child('staking').transaction(data => {
+                        if (data) {
+                           const reward = this.calculateStakingReward(data);
+                           data.claimableRewards = 0; // Reset claimable
+                           data.lastRewardTimestamp = firebase.database.ServerValue.TIMESTAMP;
+                           data.totalRewardsGenerated = (data.totalRewardsGenerated || 0) + reward;
+                        }
+                        return data;
+                    });
+                    
+                    await this.state.userRef.update({ cdnc_balance: firebase.database.ServerValue.increment(totalClaimable) });
+                    await this.logTransaction('stake_reward', totalClaimable);
+                    this.showToast(`Claimed ${totalClaimable.toFixed(8)} CDNC!`, 'success');
+                } catch (error) {
+                    this.showToast(`Claim failed: ${error.message}`, 'danger');
+                } finally {
+                    this.setButtonLoading(btn, false);
+                }
+            },
+
+            async handleStake(e) { 
+                e.preventDefault(); 
+                const btn = e.target.querySelector('#stake-btn'); 
+                const amount = parseFloat(this.state.ui.stakeAmountInput.value); 
+                if (isNaN(amount) || amount <= 0) return this.showToast('Enter a valid amount.', 'danger'); 
+                if (amount > (this.state.userData.cdnc_balance || 0)) return this.showToast('Insufficient CDNC balance.', 'danger'); 
+                this.setButtonLoading(btn, true); 
+                try { 
+                    await this.handleClaimStakingRewards({ currentTarget: this.state.ui.claimStakingRewardsBtn }); 
+                    await this.state.userRef.transaction(d => { 
+                        if (d) { 
+                            d.cdnc_balance = (d.cdnc_balance || 0) - amount; 
+                            if (!d.staking) d.staking = { stakedAmountCDNC: 0, totalRewardsGenerated: 0 }; 
+                            d.staking.stakedAmountCDNC = (d.staking.stakedAmountCDNC || 0) + amount; 
+                            d.staking.lastRewardTimestamp = firebase.database.ServerValue.TIMESTAMP; 
+                        } 
+                        return d; 
+                    }); 
+                    await this.logTransaction('stake', amount); 
+                    this.showToast(`Staked ${amount.toFixed(4)} CDNC!`, 'success'); 
+                    this.state.ui.stakeAmountInput.value = ''; 
+                } catch (error) { 
+                    this.showToast(`Staking failed: ${error.message}`, 'danger'); 
+                } finally { 
+                    this.setButtonLoading(btn, false); 
+                } 
+            },
+
+            async handleUnstake(e) { 
+                const btn = e.currentTarget; 
+                const amount = parseFloat(this.state.ui.stakeAmountInput.value); 
+                const stakedAmount = this.state.userData?.staking?.stakedAmountCDNC || 0; 
+                if (isNaN(amount) || amount <= 0) return this.showToast('Enter a valid amount.', 'danger'); 
+                if (amount > stakedAmount) return this.showToast('Amount exceeds staked balance.', 'danger'); 
+                this.setButtonLoading(btn, true); 
+                try { 
+                    await this.handleClaimStakingRewards({ currentTarget: this.state.ui.claimStakingRewardsBtn }); 
+                    await this.state.userRef.transaction(d => { 
+                        if (d?.staking) { 
+                            d.cdnc_balance = (d.cdnc_balance || 0) + amount; 
+                            const originalStaked = d.staking.stakedAmountCDNC || 0;
+                            const newStaked = originalStaked - amount;
+                            // Reset total rewards if unstaking everything to give a fresh start
+                            d.staking.totalRewardsGenerated = newStaked > 0 ? (d.staking.totalRewardsGenerated || 0) * (newStaked / originalStaked) : 0;
+                            d.staking.stakedAmountCDNC = newStaked;
+                            d.staking.lastRewardTimestamp = firebase.database.ServerValue.TIMESTAMP; 
+                        } 
+                        return d; 
+                    }); 
+                    await this.logTransaction('unstake', amount); 
+                    this.showToast(`Unstaked ${amount.toFixed(4)} CDNC!`, 'success'); 
+                    this.state.ui.stakeAmountInput.value = ''; 
+                } catch (error) { 
+                    this.showToast(`Unstaking failed: ${error.message}`, 'danger'); 
+                } finally { 
+                    this.setButtonLoading(btn, false); 
+                } 
+            },
             
             // --- [5.3] Profile, Tasks, Rewards & Invite Logic ---
             updateTasksUI() { if (!this.state.userData) return; const { lastCheckinTimestamp = 0, hasFollowedWhatsApp = false } = this.state.userData; const now = new Date(); const isSameDay = new Date(lastCheckinTimestamp).toDateString() === now.toDateString(); this.state.ui.dailyCheckinBtn.disabled = isSameDay; this.state.ui.dailyCheckinBtn.querySelector('.btn-text').innerHTML = isSameDay ? `<i class="fas fa-check"></i> Claimed` : `<i class="fas fa-calendar-check"></i> Check In`; if (hasFollowedWhatsApp) { this.state.ui.whatsappFollowBtn.disabled = true; this.state.ui.whatsappFollowBtn.querySelector('.btn-text').innerHTML = `<i class="fas fa-check"></i> Claimed`; } const progress = this.state.userData.invitationTaskProgress || {}; const rewardClaimed = this.state.userData.invitationTaskRewardClaimed; this.state.ui.inviteTaskProgressUsers.textContent = `Users: ${progress.invitedUsersCount || 0}/${this.config.INVITE_TASK_REQUIRED_USERS}`; this.state.ui.inviteTaskProgressInvestment.textContent = `Investment: $${(progress.totalInvestmentFromInvites || 0).toFixed(2)}/$${this.config.INVITE_TASK_REQUIRED_INVESTMENT_USD.toFixed(2)}`; if (rewardClaimed) { this.state.ui.claimInviteTaskBtn.disabled = true; this.state.ui.claimInviteTaskBtn.querySelector('.btn-text').innerHTML = `<i class="fas fa-check"></i> Claimed`; } else { this.state.ui.claimInviteTaskBtn.disabled = !(progress.invitedUsersCount >= this.config.INVITE_TASK_REQUIRED_USERS && progress.totalInvestmentFromInvites >= this.config.INVITE_TASK_REQUIRED_INVESTMENT_USD); } },
@@ -1579,7 +1813,6 @@
                     this.showToast('Failed to load referral data.', 'danger');
                 }
             },
-            // **[MODIFIED]** Rewards Page Logic
             updateRewardsUI() {
                 const { active_referrals_count = 0, milestoneRewardsClaimed = {} } = this.state.userData;
                 this.state.ui.milestoneRewardsList.innerHTML = '';
@@ -1613,16 +1846,14 @@
                     this.state.ui.milestoneRewardsList.appendChild(item);
                 });
             },
-            // **[MODIFIED]** New robust function to handle milestone reward claims
             async handleClaimMilestoneReward(requiredUsers, rewardUSD, btn) {
-                // Re-verify conditions based on the latest state data
                 if (this.state.userData.milestoneRewardsClaimed && this.state.userData.milestoneRewardsClaimed[requiredUsers]) {
                     return this.showToast("Reward already claimed.", "info");
                 }
                 const activeReferrals = this.state.userData.active_referrals_count || 0;
                 if (activeReferrals < requiredUsers) {
                     this.showToast("You do not meet the requirements for this reward.", "danger");
-                    return; // Stop execution
+                    return;
                 }
 
                 this.setButtonLoading(btn, true);
@@ -1633,20 +1864,17 @@
                     });
                     await this.logTransaction('bonus', rewardUSD, { reason: `Milestone: ${requiredUsers} active referrals` });
                     this.showToast(`Successfully claimed $${rewardUSD.toFixed(2)} reward!`, 'success');
-                    // The UI will auto-update upon Firebase data change, showing the 'Claimed' state.
                 } catch (error) {
                     this.showToast(`Claim failed: ${error.message}`, 'danger');
-                    // On error, revert the button to its original state
                     this.setButtonLoading(btn, false);
                 }
             },
-             // Free Mining Page Logic
             updateFreeMiningUI() {
                 const activeReferrals = this.state.userData.active_referrals_count || 0;
                 this.state.ui.freeMiningProgress.textContent = `${activeReferrals} / 5`;
             },
             
-            // --- [5.4] [NEW] NFT Logic ---
+            // --- [5.4] NFT Logic ---
             async handleBuyNft(btn) {
                 const { nftId, min, max } = btn.dataset;
                 const card = btn.closest('.nft-card');
@@ -1659,7 +1887,6 @@
                 
                 this.setButtonLoading(btn, true);
                 try {
-                    // Deduct balance and add NFT data to user's profile
                     await this.state.userRef.child('usd_balance').set(firebase.database.ServerValue.increment(-amount));
                     await this.state.userRef.child('nfts').push({
                         nftId: nftId,
@@ -1679,10 +1906,8 @@
             },
 
             updateMyNftsUI() {
-                // Clear existing intervals to prevent memory leaks
                 Object.values(this.state.nftIntervals).forEach(clearInterval);
                 this.state.nftIntervals = {};
-
                 const userNfts = this.state.userData?.nfts || {};
                 const nftKeys = Object.keys(userNfts);
 
@@ -1693,7 +1918,7 @@
                 }
 
                 this.state.ui.noNftsMsg.style.display = 'none';
-                this.state.ui.myNftsList.innerHTML = ''; // Clear previous list
+                this.state.ui.myNftsList.innerHTML = '';
 
                 nftKeys.forEach(key => {
                     const nft = userNfts[key];
@@ -1730,8 +1955,6 @@
                             <div class="spinner-sm"></div>
                         </button>`;
                     this.state.ui.myNftsList.appendChild(card);
-                    
-                    // Set up interval for this specific NFT card
                     this.state.nftIntervals[key] = setInterval(() => this.updateSingleNftCard(key), 1000);
                 });
             },
@@ -1749,14 +1972,13 @@
                 const claimBtn = document.querySelector(`.btn-claim-nft[data-nft-key="${key}"]`);
 
                 if (!claimableEl || !timerEl || !progressEl || !claimBtn) {
-                     clearInterval(this.state.nftIntervals[key]); // Element not found, stop updating
+                     clearInterval(this.state.nftIntervals[key]);
                      return;
                 }
 
                 const dailyProfit = nft.investment * this.config.NFT_DAILY_RATE_PERCENT;
                 const totalReturnCap = nft.investment * this.config.NFT_TOTAL_RETURN_PERCENT;
                 
-                // Check if NFT has expired
                 if (nft.totalProfitClaimed >= totalReturnCap) {
                     claimableEl.textContent = '$0.0000';
                     timerEl.textContent = 'Completed (300% Return Achieved)';
@@ -1764,7 +1986,7 @@
                     claimBtn.disabled = true;
                     claimBtn.querySelector('.btn-text').textContent = 'Completed';
                     progressEl.style.width = '100%';
-                    clearInterval(this.state.nftIntervals[key]); // Stop interval
+                    clearInterval(this.state.nftIntervals[key]);
                     return;
                 }
 
@@ -1773,20 +1995,14 @@
                 const timeSinceLastClaim = now - lastClaim;
                 const twentyFourHours = 24 * 60 * 60 * 1000;
                 
-                // Calculate claimable amount
                 let claimableAmount = (timeSinceLastClaim / twentyFourHours) * dailyProfit;
-                // Cap the claimable amount at the daily profit to prevent claiming more than 1 day's worth
                 claimableAmount = Math.min(claimableAmount, dailyProfit);
-                // Further cap it by the remaining return
                 claimableAmount = Math.min(claimableAmount, totalReturnCap - nft.totalProfitClaimed);
                 
                 claimableEl.textContent = `$${claimableAmount.toFixed(4)}`;
-
-                // Update progress bar
                 const progressPercent = (nft.totalProfitClaimed / totalReturnCap) * 100;
                 progressEl.style.width = `${progressPercent}%`;
 
-                // Update timer and button state
                 if (timeSinceLastClaim >= twentyFourHours) {
                     timerEl.textContent = 'Ready to Claim!';
                     timerEl.style.color = 'var(--success-color)';
@@ -1821,7 +2037,6 @@
                     const totalReturnCap = nft.investment * this.config.NFT_TOTAL_RETURN_PERCENT;
                     let profitToClaim = dailyProfit;
 
-                    // Ensure we don't claim more than the total return cap
                     if (nft.totalProfitClaimed + profitToClaim > totalReturnCap) {
                         profitToClaim = totalReturnCap - nft.totalProfitClaimed;
                     }
@@ -1832,7 +2047,6 @@
                         return;
                     }
                     
-                    // Update user data in one go
                     const updates = {};
                     updates[`/users/${this.state.currentUser.uid}/usd_balance`] = firebase.database.ServerValue.increment(profitToClaim);
                     updates[`/users/${this.state.currentUser.uid}/nfts/${nftKey}/totalProfitClaimed`] = firebase.database.ServerValue.increment(profitToClaim);
@@ -1851,8 +2065,35 @@
             },
 
             // --- [6] DATA LISTENERS ---
-            listenToUserData() { if (!this.state.currentUser || this.state.userRef) return; this.state.userRef = this.db.ref('users/' + this.state.currentUser.uid); this.state.txRef = this.db.ref('transactions/' + this.state.currentUser.uid); this.state.userRef.on('value', (snapshot) => { this.hidePreloader(); this.state.userData = snapshot.val(); if (this.state.userData) { this.updateUI(); } else { this.auth.signOut(); } }, (error) => { console.error("Firebase user data error:", error); this.showToast("Could not sync user data.", "danger"); }); this.state.txRef.limitToLast(50).on('value', (snapshot) => this.updateTransactionHistory(snapshot.val())); },
-            stopAllListeners() { if (this.state.userRef) this.state.userRef.off(); if (this.state.txRef) this.state.txRef.off(); if(this.state.miningProfitInterval) clearInterval(this.state.miningProfitInterval); if(this.state.stakingRewardInterval) clearInterval(this.state.stakingRewardInterval); Object.values(this.state.nftIntervals).forEach(clearInterval); this.state.nftIntervals = {}; this.state.userRef = null; this.state.txRef = null; },
+            listenToUserData() { 
+                if (!this.state.currentUser || this.state.userRef) return; 
+                this.state.userRef = this.db.ref('users/' + this.state.currentUser.uid); 
+                this.state.txRef = this.db.ref('transactions/' + this.state.currentUser.uid); 
+                this.state.userRef.on('value', (snapshot) => { 
+                    this.hidePreloader(); 
+                    this.state.userData = snapshot.val(); 
+                    if (this.state.userData) { 
+                        this.updateUI(); 
+                    } else { 
+                        this.auth.signOut(); 
+                    } 
+                }, (error) => { 
+                    console.error("Firebase user data error:", error); 
+                    this.showToast("Could not sync user data.", "danger"); 
+                }); 
+                this.state.txRef.limitToLast(100).on('value', (snapshot) => this.updateAllHistories(snapshot.val())); 
+            },
+
+            stopAllListeners() { 
+                if (this.state.userRef) this.state.userRef.off(); 
+                if (this.state.txRef) this.state.txRef.off(); 
+                if(this.state.miningProfitInterval) clearInterval(this.state.miningProfitInterval); 
+                if(this.state.stakingRewardInterval) clearInterval(this.state.stakingRewardInterval); 
+                Object.values(this.state.nftIntervals).forEach(clearInterval); 
+                this.state.nftIntervals = {}; 
+                this.state.userRef = null; 
+                this.state.txRef = null; 
+            },
 
             // --- [7] HELPERS ---
             copyToClipboard(textToCopy, elementToUpdate = null) { if (!textToCopy) return; navigator.clipboard.writeText(textToCopy).then(() => { this.showToast('Copied!', 'success'); if (elementToUpdate) { const originalHTML = elementToUpdate.innerHTML; if(elementToUpdate.classList.contains('address-box')) { const icon = elementToUpdate.querySelector('.copy-btn i'); const originalIconClass = icon.className; elementToUpdate.classList.add('copied'); icon.className = 'fas fa-check'; setTimeout(() => { elementToUpdate.classList.remove('copied'); icon.className = originalIconClass; }, 2500); } else { elementToUpdate.innerHTML = `<span class="btn-text"><i class="fas fa-check"></i> Copied!</span>`; elementToUpdate.disabled = true; setTimeout(() => { elementToUpdate.innerHTML = originalHTML; elementToUpdate.disabled = false; }, 2000); } } }).catch(() => this.showToast('Failed to copy.', 'danger')); },
@@ -1865,7 +2106,6 @@
             },
         };
 
-        // Make the App object globally accessible for inline onclick handlers if needed elsewhere
         window.App = App;
         App.init();
     });
